@@ -26,39 +26,45 @@
             --zinc-100: #f4f4f5;
 
             /* Semantic State Tones */
-            --tone-char-bg: rgba(69, 26, 3, 0.75);     --tone-char-bd: #fbbf24;     --tone-char-fg: #fcd34d;
-            --tone-selected-bg: rgba(6, 78, 59, 0.7);  --tone-selected-bd: #34d399; --tone-selected-fg: #6ee7b7;
-            --tone-stage-bg: rgba(12, 74, 110, 0.7);   --tone-stage-bd: #38bdf8;    --tone-stage-fg: #7dd3fc;
-            --tone-grant-bg: rgba(19, 78, 74, 0.75);   --tone-grant-bd: #2dd4bf;    --tone-grant-fg: #99f6e4;
-            --tone-synergy-bg: rgba(74, 4, 78, 0.8);   --tone-synergy-bd: #e879f9;  --tone-synergy-fg: #f5d0fe;
-            --tone-upgrade-bg: rgba(67, 20, 7, 0.85);  --tone-upgrade-bd: #fb923c;  --tone-upgrade-fg: #fed7aa;
-            --tone-done-bg: rgba(66, 32, 6, 0.85);     --tone-done-bd: #fde047;     --tone-done-fg: #fef08a;
-            --tone-sealed-bg: rgba(69, 10, 10, 0.75);  --tone-sealed-bd: #dc2626;   --tone-sealed-fg: #fca5a5;
+            --tone-char-bg: color-mix(in srgb, #451a03 75%, transparent);     --tone-char-bd: #fbbf24;     --tone-char-fg: #fcd34d;
+            --tone-selected-bg: color-mix(in srgb, #064e3b 70%, transparent);  --tone-selected-bd: #34d399; --tone-selected-fg: #6ee7b7;
+            --tone-stage-bg: color-mix(in srgb, #0c4a6e 70%, transparent);   --tone-stage-bd: #38bdf8;    --tone-stage-fg: #7dd3fc;
+            --tone-grant-bg: color-mix(in srgb, #134e4a 75%, transparent);   --tone-grant-bd: #2dd4bf;    --tone-grant-fg: #99f6e4;
+            --tone-synergy-bg: color-mix(in srgb, #4a044e 80%, transparent);   --tone-synergy-bd: #e879f9;  --tone-synergy-fg: #f5d0fe;
+            --tone-upgrade-bg: color-mix(in srgb, #431407 85%, transparent);  --tone-upgrade-bd: #fb923c;  --tone-upgrade-fg: #fed7aa;
+            --tone-done-bg: color-mix(in srgb, #422006 85%, transparent);     --tone-done-bd: #fde047;     --tone-done-fg: #fef08a;
+            --tone-sealed-bg: color-mix(in srgb, #450a0a 75%, transparent);  --tone-sealed-bd: #dc2626;   --tone-sealed-fg: #fca5a5;
             --tone-muted-bg: #18181b;                  --tone-muted-bd: #3f3f46;    --tone-muted-fg: #71717a;
-            --tone-alt-bg: rgba(59, 7, 100, 0.9);      --tone-alt-bd: rgba(147, 51, 234, 0.8); --tone-alt-fg: #e9d5ff;
+            --tone-alt-bg: color-mix(in srgb, #3b0764 90%, transparent);      --tone-alt-bd: color-mix(in srgb, #9333ea 80%, transparent); --tone-alt-fg: #e9d5ff;
+
+            /* Button Variant Colors */
+            --btn-primary-bg: #059669;
+            --btn-amber-bg: #d97706;
+            --btn-share-hover-bg: color-mix(in srgb, #065f46 85%, transparent);
+            --btn-share-hover-fg: #ecfdf5;
 
             /* 40K Default Theme */
-            --bg-page: #060907;
-            --bg-pattern: repeating-linear-gradient(0deg, rgba(16, 185, 129, 0.03) 0 1px, transparent 1px 3px);
-            --bg-header: rgba(10, 16, 12, 0.95);
-            --bd-header: #1e3528;
+            --bg-page: #100f0f;
+            --bg-pattern: repeating-linear-gradient(0deg, color-mix(in srgb, #10b981 3%, transparent) 0 1px, transparent 1px 3px);
+            --bg-header: color-mix(in srgb, #0a100c 95%, transparent);
+            --bd-header: #1c3326;
             --header-top: transparent;
             --bg-panel: #0b110d;
             --bd-panel: #1c3326;
-            --bd-divider: #192e22;
-            --bg-subpanel: #060907;
+            --bd-divider: #1c3326;
+            --bg-subpanel: #100f0f;
             --accent-1: #34d399;
             --accent-2: #34d399;
-            --accent-soft: rgba(6, 78, 59, 0.9);
+            --accent-soft: color-mix(in srgb, #064e3b 90%, transparent);
             --accent-soft-fg: #a7f3d0;
-            --accent-bd: rgba(16, 185, 129, 0.8);
-            --accent-glow: rgba(16, 185, 129, 0.2);
-            --subtitle-fg: rgba(167, 243, 208, 0.6);
+            --accent-bd: color-mix(in srgb, #10b981 80%, transparent);
+            --accent-glow: color-mix(in srgb, #10b981 20%, transparent);
+            --subtitle-fg: color-mix(in srgb, #a7f3d0 60%, transparent);
             --emblem-bg: #0e1f15;
-            --emblem-bd: rgba(4, 120, 87, 0.8);
-            --box-bg: #070b09;
-            --box-bd: rgba(5, 150, 105, 0.8);
-            --box-glow: rgba(16, 185, 129, 0.12);
+            --emblem-bd: color-mix(in srgb, #047857 80%, transparent);
+            --box-bg: #151814;
+            --box-bd: color-mix(in srgb, #059669 80%, transparent);
+            --box-glow: color-mix(in srgb, #10b981 12%, transparent);
             --dd-hover-bg: #122018;
             --dd-hover-fg: #d1fae5;
             --bracket-top: #a1a1aa;
@@ -66,29 +72,29 @@
         }
 
         [data-universe="aos"] {
-            --bg-page: #070a12;
+            --bg-page: #0d1628;
             --bg-pattern:
-                    radial-gradient(circle at 75% 25%, rgba(234, 179, 8, 0.06), transparent 55%),
-                    radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.05), transparent 50%);
-            --bg-header: rgba(12, 17, 30, 0.95);
-            --bd-header: rgba(180, 83, 9, 0.5);
-            --header-top: rgba(251, 191, 36, 0.8);
+                    radial-gradient(circle at 75% 25%, color-mix(in srgb, #eab308 6%, transparent), transparent 55%),
+                    radial-gradient(circle at 20% 80%, color-mix(in srgb, #38bdf8 5%, transparent), transparent 50%);
+            --bg-header: color-mix(in srgb, #0c111e 95%, transparent);
+            --bd-header: color-mix(in srgb, #b45309 50%, transparent);
+            --header-top: color-mix(in srgb, #fbbf24 80%, transparent);
             --bg-panel: #0c111d;
-            --bd-panel: rgba(146, 64, 14, 0.5);
-            --bd-divider: rgba(120, 53, 15, 0.5);
-            --bg-subpanel: #070b14;
+            --bd-panel: color-mix(in srgb, #92400e 50%, transparent);
+            --bd-divider: color-mix(in srgb, #78350f 50%, transparent);
+            --bg-subpanel: #0d1628;
             --accent-1: #38bdf8;
             --accent-2: #fbbf24;
-            --accent-soft: rgba(69, 26, 3, 0.9);
+            --accent-soft: color-mix(in srgb, #451a03 90%, transparent);
             --accent-soft-fg: #fde68a;
-            --accent-bd: rgba(251, 191, 36, 0.8);
-            --accent-glow: rgba(245, 158, 11, 0.25);
-            --subtitle-fg: rgba(254, 243, 199, 0.6);
+            --accent-bd: color-mix(in srgb, #fbbf24 80%, transparent);
+            --accent-glow: color-mix(in srgb, #f59e0b 25%, transparent);
+            --subtitle-fg: color-mix(in srgb, #fef3c7 60%, transparent);
             --emblem-bg: #17140b;
-            --emblem-bd: rgba(245, 158, 11, 0.8);
-            --box-bg: #080c16;
-            --box-bd: rgba(245, 158, 11, 0.75);
-            --box-glow: rgba(245, 158, 11, 0.14);
+            --emblem-bd: color-mix(in srgb, #f59e0b 80%, transparent);
+            --box-bg: #291c0e;
+            --box-bd: color-mix(in srgb, #f59e0b 75%, transparent);
+            --box-glow: color-mix(in srgb, #f59e0b 14%, transparent);
             --dd-hover-bg: #141c30;
             --dd-hover-fg: #fef3c7;
             --bracket-top: #fcd34d;
@@ -260,13 +266,13 @@
             flex-shrink: 0;
             transition: background-color 0.15s, border-color 0.15s, color 0.15s;
         }
-        .ws-btn:hover { border-color: #991b1b; background: rgba(69, 10, 10, 0.45); color: #fca5a5; }
-        .ws-btn[data-variant="share"] { background: rgba(6, 78, 59, 0.75); border-color: rgba(5, 150, 105, 0.8); color: #a7f3d0; }
-        .ws-btn[data-variant="share"]:hover { background: rgba(6, 95, 70, 0.85); color: #ecfdf5; }
-        .ws-btn[data-variant="primary"] { background: #059669; border-color: #10b981; color: var(--zinc-950); }
-        .ws-btn[data-variant="primary"]:hover { background: #10b981; }
-        .ws-btn[data-variant="amber"] { background: #d97706; border-color: #f59e0b; color: var(--zinc-950); }
-        .ws-btn[data-variant="amber"]:hover { background: #f59e0b; }
+        .ws-btn:hover { border-color: var(--tone-sealed-bd); background: var(--tone-sealed-bg); color: var(--tone-sealed-fg); }
+        .ws-btn[data-variant="share"] { background: var(--accent-soft); border-color: var(--accent-bd); color: var(--accent-soft-fg); }
+        .ws-btn[data-variant="share"]:hover { background: var(--btn-share-hover-bg); color: var(--btn-share-hover-fg); }
+        .ws-btn[data-variant="primary"] { background: var(--btn-primary-bg); border-color: var(--accent-1); color: var(--zinc-950); }
+        .ws-btn[data-variant="primary"]:hover { background: var(--accent-1); }
+        .ws-btn[data-variant="amber"] { background: var(--btn-amber-bg); border-color: var(--accent-2); color: var(--zinc-950); }
+        .ws-btn[data-variant="amber"]:hover { background: var(--accent-2); }
 
         .ws-hide-mobile { display: none; }
         @media (min-width: 640px) { .ws-hide-mobile { display: inline; } }
@@ -816,19 +822,35 @@
 
         const WAX_SEAL_SVG = `<svg viewBox="0 0 16 16" shape-rendering="crispEdges" class="ws-wax-seal" aria-hidden="true"><path fill="#2a0303" d="M5 0h5v1h2v1h1v1h1v2h1v5h-1v2h-1v1h-1v1h-2v1H5v-1H3v-1H2v-1H1v-2H0V5h1V3h1V2h1V1h2V0z"/><path fill="#991b1b" d="M5 1h5v1h2v1h1v2h1v5h-1v2h-1v1h-2v1H5v-1H3v-1H2v-2H1V5h1V3h1V2h2V1z"/><path fill="#ef4444" d="M5 1h4v1H5V1zM3 2h2v1H3V2zM2 3h1v2H2V3zM1 5h1v4H1V5z"/><path fill="#b91c1c" d="M5 2h5v1h2v2h1v5h-1v1h-1v-1h1V5h-1V3H5V2z"/><rect x="11" y="1" width="1" height="1" fill="#dc2626"/><rect x="14" y="6" width="1" height="2" fill="#dc2626"/><rect x="6" y="14" width="2" height="1" fill="#dc2626"/><rect x="1" y="9" width="1" height="1" fill="#7f1d1d"/><path fill="#450a0a" d="M4 4h2v1h1v1h2V5h1V4h2v2h-1v1h-1v2h1v1h1v2h-2v-1H9v-1H7v1H6v1H4v-2h1V9h1V7H5V6H4V4z"/><path fill="#650d0d" d="M5 5h1v1h1v1h2V6h1V5h1v1h-1v1H9v2h1v1h1v1h-1v-1H9V9H7v1H6v1H5v-1h1V9h1V7H6V6H5V5z"/></svg>`;
 
-        const svg = (name, size = 14, sw = 2) =>
-            `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0">${ICONS[name] || ""}</svg>`;
+        /* ==========================================================================
+           1b. UTILITY NAMESPACE
+           ========================================================================== */
+        const Utils = {
+            /** Renders an inline SVG icon from the ICONS map */
+            svg: (name, size = 14, sw = 2) =>
+                `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0">${ICONS[name] || ""}</svg>`,
 
-        const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+            /** Escapes HTML special characters */
+            esc: (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])),
 
-        const spriteHtml = (name) => {
-            const idx = ATLAS_INDEX.get(name);
-            if (idx !== undefined) {
-                return `<span role="img" aria-label="${esc(name)}" class="ws-sprite-icon" style="--col:${idx % CONFIG.SPRITE.ATLAS_SIZE};--row:${(idx / CONFIG.SPRITE.ATLAS_SIZE) | 0}"></span>`;
-            }
-            const ini = name.split(/[\s&-]+/).filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
-            return `<span class="ws-mono" style="font-size:11px;font-weight:900">${esc(ini)}</span>`;
+            /** Renders a sprite from the atlas or falls back to initials */
+            spriteHtml: (name) => {
+                const idx = ATLAS_INDEX.get(name);
+                if (idx !== undefined) {
+                    return `<span role="img" aria-label="${Utils.esc(name)}" class="ws-sprite-icon" style="--col:${idx % CONFIG.SPRITE.ATLAS_SIZE};--row:${(idx / CONFIG.SPRITE.ATLAS_SIZE) | 0}"></span>`;
+                }
+                const ini = name.split(/[\s&-]+/).filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
+                return `<span class="ws-mono" style="font-size:11px;font-weight:900">${Utils.esc(ini)}</span>`;
+            },
+
+            /** Inline wax seal SVG overlay for sealed tiles */
+            WAX_SEAL_SVG: WAX_SEAL_SVG
         };
+
+        // Keep top-level aliases for use in template literals
+        const svg = Utils.svg;
+        const esc = Utils.esc;
+        const spriteHtml = Utils.spriteHtml;
 
         /* ==========================================================================
            2. DATA FACTORIES
@@ -843,7 +865,7 @@
          * @param {string|null} [opts.flag] - Special flag: "alt", "archeotech", "reliquary", or "exotic"
          * @returns {object} Character entry
          */
-        const createCharacter = ({name, weapons, passive, flag}) => ({name, weapons, passive, flag});
+        const createCharacter = ({name, weapons = [], passive, flag}) => ({name, weapons, passive, flag});
 
         /**
          * Creates a weapon data entry.
@@ -877,8 +899,8 @@
         ];
 
         const SHARED_WEAPONS = [
-            ["Nuln Oil", "Hourglass", "Mordant Earth"],
-            ["D6 Dice", "Scatter Die", "Sustained Fire Dice"]
+            createWeapon({name: "Nuln Oil", passive: "Hourglass", evolution: "Mordant Earth"}),
+            createWeapon({name: "D6 Dice", passive: "Scatter Die", evolution: "Sustained Fire Dice"})
         ];
 
         const RAW_GAME_DATA = {
@@ -912,36 +934,36 @@
                     createCharacter({name: "High Abbess Morvenn Vahl", weapons: ["Fidelis"], passive: "All stats improve for every Adepta Sororitas follower."})
                 ],
                 stages: [
-                    ["Imperial Bastion", ["Nuln Oil"], ["Hourglass", "Magnet"], "Free Nuln Oil + Hourglass on ground (instant Mordant Earth evolution)."],
-                    ["Gallowdark", ["D6 Dice"], ["Dice Cube", "Glue", "Sabaton", "Scatter Die"], "Free D6 Dice + Scatter Die on ground (instant Sustained Fire Dice)."],
-                    ["Ork Stronghold", ["Nuln Oil"], ["Bugman's Tankard", "Hourglass", "Lightning Bolt", "Liquid Green Stuff"], "Free Nuln Oil + Hourglass. Finding Makari with Auspex unlocks Da Lucky Stikk."],
-                    ["Imperial Shipyard", [], ["Chaos Sigil", "Liquid Green Stuff", "Sabaton", "Tactical Rock"], "4 free ground passives including Tactical Rock for Saint Celestine."],
-                    ["Death World Invasion", ["Storm Eagle Rocket"], ["Codex Astartes", "Figure Case", "White Dwarf"], "Free Storm Eagle Rocket + White Dwarf (Deathstrike Missile) & Codex Astartes."],
-                    ["Desert Wasteland", ["Storm Eagle Rocket"], [...SHARED_PASSIVES].sort(), "All 18 standard passives spawn on the ground plus Storm Eagle Rocket (50% × Chance)."],
-                    ["Hobby Table (40K)", ["D6 Dice"], ["Ardcoat", "Dice Cube", "Golden Demon", "Scatter Die", "Tape Measure"], "Free D6 Dice + Scatter Die & Golden Demon on the hobby table."],
-                    ["Perils of the Warp", [], [], "30-minute survival gauntlet vs. Mortarion — no fixed ground weapons or passives."]
+                    createStage({name: "Imperial Bastion", weapons: ["Nuln Oil"], passives: ["Hourglass", "Magnet"], note: "Free Nuln Oil + Hourglass on ground (instant Mordant Earth evolution)."}),
+                    createStage({name: "Gallowdark", weapons: ["D6 Dice"], passives: ["Dice Cube", "Glue", "Sabaton", "Scatter Die"], note: "Free D6 Dice + Scatter Die on ground (instant Sustained Fire Dice)."}),
+                    createStage({name: "Ork Stronghold", weapons: ["Nuln Oil"], passives: ["Bugman's Tankard", "Hourglass", "Lightning Bolt", "Liquid Green Stuff"], note: "Free Nuln Oil + Hourglass. Finding Makari with Auspex unlocks Da Lucky Stikk."}),
+                    createStage({name: "Imperial Shipyard", weapons: [], passives: ["Chaos Sigil", "Liquid Green Stuff", "Sabaton", "Tactical Rock"], note: "4 free ground passives including Tactical Rock for Saint Celestine."}),
+                    createStage({name: "Death World Invasion", weapons: ["Storm Eagle Rocket"], passives: ["Codex Astartes", "Figure Case", "White Dwarf"], note: "Free Storm Eagle Rocket + White Dwarf (Deathstrike Missile) & Codex Astartes."}),
+                    createStage({name: "Desert Wasteland", weapons: ["Storm Eagle Rocket"], passives: [...SHARED_PASSIVES].sort(), note: "All 18 standard passives spawn on the ground plus Storm Eagle Rocket (50% × Chance)."}),
+                    createStage({name: "Hobby Table (40K)", weapons: ["D6 Dice"], passives: ["Ardcoat", "Dice Cube", "Golden Demon", "Scatter Die", "Tape Measure"], note: "Free D6 Dice + Scatter Die & Golden Demon on the hobby table."}),
+                    createStage({name: "Perils of the Warp", weapons: [], passives: [], note: "30-minute survival gauntlet vs. Mortarion — no fixed ground weapons or passives."})
                 ],
                 weapons: [
-                    ["Chainsword", "Tape Measure", "Eviscerator Chainsword"],
-                    ["Lasgun", "Gauntlet", "Meltagun"],
-                    ["Boltgun", "Dice Cube", "Heavy Bolter"],
-                    ["Shield of Faith", "Bugman's Tankard", "Emperor's Wrath"],
-                    ["Flamer", "Glue", "Heavy Flamer"],
-                    ["Combat Shotgun", "Magnet", "Executioner shotgun"],
-                    ["Whirlwind Battery", "Liquid Green Stuff", "Orbital Bombardment"],
-                    ["Frag Grenade", "Bandolier", "Ripper Pistol"],
-                    ["Mechanical Bite", "Sabaton", "Remote Detonation"],
-                    ["Power Klaw", "Da Lucky Stikk", "Bale Eye"],
-                    ["Ardent Blade", "Tactical Rock", "Weapon of the Matriarch"],
-                    ["Power Fist", "Codex Astartes", "Gauntlets Of Ultramar"],
-                    ["Storm Bolter", "Lightning Bolt", "Assault Cannon"],
-                    ["Battle Cannon", "Figure Case", "Side Sponsons"],
-                    ["Spear of the Faithful", "Chaos Sigil", "Thorn of the White Rose"],
-                    ["Crozius Arcanum", "Lightning Bolt", "Benediction of Fury"],
-                    ["Smite", "Ardcoat", "Fury of the Ancients"],
-                    ["Archeotech", null, "Reliquary", "grant"],
-                    ["Fidelis", "Golden Demon", "Purgator Mirabilis"],
-                    ["Storm Eagle Rocket", "White Dwarf", "Deathstrike Missile"],
+                    createWeapon({name: "Chainsword", passive: "Tape Measure", evolution: "Eviscerator Chainsword"}),
+                    createWeapon({name: "Lasgun", passive: "Gauntlet", evolution: "Meltagun"}),
+                    createWeapon({name: "Boltgun", passive: "Dice Cube", evolution: "Heavy Bolter"}),
+                    createWeapon({name: "Shield of Faith", passive: "Bugman's Tankard", evolution: "Emperor's Wrath"}),
+                    createWeapon({name: "Flamer", passive: "Glue", evolution: "Heavy Flamer"}),
+                    createWeapon({name: "Combat Shotgun", passive: "Magnet", evolution: "Executioner shotgun"}),
+                    createWeapon({name: "Whirlwind Battery", passive: "Liquid Green Stuff", evolution: "Orbital Bombardment"}),
+                    createWeapon({name: "Frag Grenade", passive: "Bandolier", evolution: "Ripper Pistol"}),
+                    createWeapon({name: "Mechanical Bite", passive: "Sabaton", evolution: "Remote Detonation"}),
+                    createWeapon({name: "Power Klaw", passive: "Da Lucky Stikk", evolution: "Bale Eye"}),
+                    createWeapon({name: "Ardent Blade", passive: "Tactical Rock", evolution: "Weapon of the Matriarch"}),
+                    createWeapon({name: "Power Fist", passive: "Codex Astartes", evolution: "Gauntlets Of Ultramar"}),
+                    createWeapon({name: "Storm Bolter", passive: "Lightning Bolt", evolution: "Assault Cannon"}),
+                    createWeapon({name: "Battle Cannon", passive: "Figure Case", evolution: "Side Sponsons"}),
+                    createWeapon({name: "Spear of the Faithful", passive: "Chaos Sigil", evolution: "Thorn of the White Rose"}),
+                    createWeapon({name: "Crozius Arcanum", passive: "Lightning Bolt", evolution: "Benediction of Fury"}),
+                    createWeapon({name: "Smite", passive: "Ardcoat", evolution: "Fury of the Ancients"}),
+                    createWeapon({name: "Archeotech", passive: null, evolution: "Reliquary", option: CONFIG.FLAG_TYPES.GRANT}),
+                    createWeapon({name: "Fidelis", passive: "Golden Demon", evolution: "Purgator Mirabilis"}),
+                    createWeapon({name: "Storm Eagle Rocket", passive: "White Dwarf", evolution: "Deathstrike Missile"}),
                     ...SHARED_WEAPONS
                 ],
                 passives: ["Da Lucky Stikk", "Codex Astartes", ...SHARED_PASSIVES]
@@ -950,60 +972,60 @@
                 label: "Age of Sigmar",
                 subtitle: "Azyrite Celestial Vault • 6 Weapon & 6 Passive Slots + Stage & Exotic Grants",
                 characters: [
-                    ["Neave Blacktalon", ["Tempest Axes"], "Moves 20% faster. Gains +10% Range every 5 levels (max 30%)."],
-                    ["Armand Callis", ["Brace of Pistols"], "Gains +5% Reload every 10 levels (max +15%). Has +2 Attacks with exactly one follower."],
-                    ["Armand Callis & Hanniver Toll", ["Brace of Pistols", "Flintlock Pistols"], "Gains +5% Reload every 10 levels (max +15%). Has +2 Attacks with exactly one follower. Starts with an additional Flintlock Pistols.", "alt"],
-                    ["Lorai, Child of the Abyss", ["Nebulous Sea-Fog"], "Gains +5% Chance every 5 levels (max +30%). Finds more endless spells."],
-                    ["Juntar Bernskyn", ["Fusil-Cannon"], "Gains +1 Save and +10% Reload when stationary."],
-                    ["Shakana Goldenblade", ["Boltstorm Pistol"], "Gains +5% Skill every 10 levels (max 30%). Gains +5% Veterancy for every Weapon equipped."],
-                    ["Sharynn Azurwrath", ["Grandblade"], "Gains a bonus to Strength and Reload at critically low Wounds."],
-                    ["Hendrick, The Silver Wolf", ["Cyclone Sword"], "Gains +5% Aura every 5 levels (max +30%). Gains a temporary Warded status effect whenever a new follower joins."],
-                    ["Hanniver Toll", ["Flintlock Pistols"], "Gains +5% Sustain every 5 levels (max +30%). +10% Damage against bosses."],
-                    ["Hanniver Toll & Armand Callis", ["Flintlock Pistols", "Brace of Pistols"], "Gains +5% Sustain every 5 levels (max +30%). +10% Damage against bosses. Starts with an additional Brace of Pistols.", "alt"],
-                    ["Gotrek Gurnisson", ["Fyrestorm Greataxe"], "Gains +1 Redeployment at certain kill thresholds. Redeploys with the Berserk Status effect."],
-                    ["Gotrek Gurnisson & Maleneth Witchblade", ["Fyrestorm Greataxe", "Poisoned Throwing Knives"], "Gains +1 Redeployment at certain kill thresholds. Redeploys with the Berserk Status effect. Starts with an additional Poisoned Throwing Knives.", "alt"],
-                    ["Rostus Oxenhammer", ["Stormcharged Warhammer"], "Gains +10 Wounds for every 1000 enemies defeated."],
-                    ["Ulgromthier", ["Brazier Staff"], "Gains a random stat buff for every 100 coins collected. Finds more Ur-Gold runes."],
-                    ["Mistress Verentia", ["Twin-Tailed Cat"], "Gains +5% Move, Wounds and Skill every time she levels up her starting weapon."],
-                    ["Major Docheval", ["Long-Fusil"], "Strength scales with Save."],
-                    ["Lord-Commander Bastian Carthalos", ["Uskavar the Sunderer"], "Gains +0.1 Toughness for every 1000 enemies defeated."],
-                    ["Yndrasta, the Celestial Spear", ["Blade of the High Heavens"], "Gains +0.5% Sustain and Chance every level. Deals 50% extra damage to bosses."],
-                    ["Maleneth Witchblade", ["Poisoned Throwing Knives"], "Gains +5% Move, Strength and Sustain for every boss defeated."],
-                    ["Maleneth Witchblade & Gotrek Gurnisson", ["Poisoned Throwing Knives", "Fyrestorm Greataxe"], "Gains +5% Move, Strength and Sustain for every boss defeated. Starts with an additional Fyrestorm Greataxe.", "alt"],
-                    ["Lyssa Revenya", ["Rope & Grapnel"], "Gains a bonus to Chance and Move when lots of enemies are in sight."],
-                    ["Valius, the Keeper Aqshian", ["Mystical Ward"], "Gains +5% Strength, Reload, Range and Move every 10 Levels. Corruption scales with all stats."],
-                    ["Lord-Magnate Brokk Grungsson", [], "Ignores terrain. Gains +2% Tithe every time a Reroll, Skip or Banish is used. Starts with Exotic Weaponry (free weapon of choice, 0 slots used).", "exotic"],
-                    ["Drekki Flynt", ["Artefacts of Power"], "Chance of collectathon increases with enemies killed."],
-                    ["Celestant-Prime, Hammer of Sigmar", ["Ghal Maraz"], "All stats increase for every 1000 enemies defeated."]
+                    createCharacter({name: "Neave Blacktalon", weapons: ["Tempest Axes"], passive: "Moves 20% faster. Gains +10% Range every 5 levels (max 30%)."}),
+                    createCharacter({name: "Armand Callis", weapons: ["Brace of Pistols"], passive: "Gains +5% Reload every 10 levels (max +15%). Has +2 Attacks with exactly one follower."}),
+                    createCharacter({name: "Armand Callis & Hanniver Toll", weapons: ["Brace of Pistols", "Flintlock Pistols"], passive: "Gains +5% Reload every 10 levels (max +15%). Has +2 Attacks with exactly one follower. Starts with an additional Flintlock Pistols.", flag: CONFIG.FLAG_TYPES.ALT}),
+                    createCharacter({name: "Lorai, Child of the Abyss", weapons: ["Nebulous Sea-Fog"], passive: "Gains +5% Chance every 5 levels (max +30%). Finds more endless spells."}),
+                    createCharacter({name: "Juntar Bernskyn", weapons: ["Fusil-Cannon"], passive: "Gains +1 Save and +10% Reload when stationary."}),
+                    createCharacter({name: "Shakana Goldenblade", weapons: ["Boltstorm Pistol"], passive: "Gains +5% Skill every 10 levels (max 30%). Gains +5% Veterancy for every Weapon equipped."}),
+                    createCharacter({name: "Sharynn Azurwrath", weapons: ["Grandblade"], passive: "Gains a bonus to Strength and Reload at critically low Wounds."}),
+                    createCharacter({name: "Hendrick, The Silver Wolf", weapons: ["Cyclone Sword"], passive: "Gains +5% Aura every 5 levels (max +30%). Gains a temporary Warded status effect whenever a new follower joins."}),
+                    createCharacter({name: "Hanniver Toll", weapons: ["Flintlock Pistols"], passive: "Gains +5% Sustain every 5 levels (max +30%). +10% Damage against bosses."}),
+                    createCharacter({name: "Hanniver Toll & Armand Callis", weapons: ["Flintlock Pistols", "Brace of Pistols"], passive: "Gains +5% Sustain every 5 levels (max +30%). +10% Damage against bosses. Starts with an additional Brace of Pistols.", flag: CONFIG.FLAG_TYPES.ALT}),
+                    createCharacter({name: "Gotrek Gurnisson", weapons: ["Fyrestorm Greataxe"], passive: "Gains +1 Redeployment at certain kill thresholds. Redeploys with the Berserk Status effect."}),
+                    createCharacter({name: "Gotrek Gurnisson & Maleneth Witchblade", weapons: ["Fyrestorm Greataxe", "Poisoned Throwing Knives"], passive: "Gains +1 Redeployment at certain kill thresholds. Redeploys with the Berserk Status effect. Starts with an additional Poisoned Throwing Knives.", flag: CONFIG.FLAG_TYPES.ALT}),
+                    createCharacter({name: "Rostus Oxenhammer", weapons: ["Stormcharged Warhammer"], passive: "Gains +10 Wounds for every 1000 enemies defeated."}),
+                    createCharacter({name: "Ulgromthier", weapons: ["Brazier Staff"], passive: "Gains a random stat buff for every 100 coins collected. Finds more Ur-Gold runes."}),
+                    createCharacter({name: "Mistress Verentia", weapons: ["Twin-Tailed Cat"], passive: "Gains +5% Move, Wounds and Skill every time she levels up her starting weapon."}),
+                    createCharacter({name: "Major Docheval", weapons: ["Long-Fusil"], passive: "Strength scales with Save."}),
+                    createCharacter({name: "Lord-Commander Bastian Carthalos", weapons: ["Uskavar the Sunderer"], passive: "Gains +0.1 Toughness for every 1000 enemies defeated."}),
+                    createCharacter({name: "Yndrasta, the Celestial Spear", weapons: ["Blade of the High Heavens"], passive: "Gains +0.5% Sustain and Chance every level. Deals 50% extra damage to bosses."}),
+                    createCharacter({name: "Maleneth Witchblade", weapons: ["Poisoned Throwing Knives"], passive: "Gains +5% Move, Strength and Sustain for every boss defeated."}),
+                    createCharacter({name: "Maleneth Witchblade & Gotrek Gurnisson", weapons: ["Poisoned Throwing Knives", "Fyrestorm Greataxe"], passive: "Gains +5% Move, Strength and Sustain for every boss defeated. Starts with an additional Fyrestorm Greataxe.", flag: CONFIG.FLAG_TYPES.ALT}),
+                    createCharacter({name: "Lyssa Revenya", weapons: ["Rope & Grapnel"], passive: "Gains a bonus to Chance and Move when lots of enemies are in sight."}),
+                    createCharacter({name: "Valius, the Keeper Aqshian", weapons: ["Mystical Ward"], passive: "Gains +5% Strength, Reload, Range and Move every 10 Levels. Corruption scales with all stats."}),
+                    createCharacter({name: "Lord-Magnate Brokk Grungsson", weapons: [], passive: "Ignores terrain. Gains +2% Tithe every time a Reroll, Skip or Banish is used. Starts with Exotic Weaponry (free weapon of choice, 0 slots used).", flag: CONFIG.FLAG_TYPES.EXOTIC}),
+                    createCharacter({name: "Drekki Flynt", weapons: ["Artefacts of Power"], passive: "Chance of collectathon increases with enemies killed."}),
+                    createCharacter({name: "Celestant-Prime, Hammer of Sigmar", weapons: ["Ghal Maraz"], passive: "All stats increase for every 1000 enemies defeated."})
                 ],
                 stages: [
-                    ["The Great Parch", ["Nuln Oil"], ["Ardcoat", "Bandolier", "Bugman's Tankard", "Hourglass", "Sabaton", "Tape Measure"], "Free Nuln Oil + Hourglass & 5 other ground passives."],
-                    ["Skrappa Spill", ["D6 Dice"], ["Dice Cube", "Gauntlet", "Kragg Blackhammer's Master Rune", "Scatter Die", "Tape Measure"], "Free D6 Dice + Scatter Die & Kragg Blackhammer's Master Rune for Gotrek."],
-                    ["Bloodwind Spoil", ["Nuln Oil"], ["Bugman's Tankard", "Chaos Sigil", "Hourglass", "Tactical Rock"], "Free Nuln Oil + Hourglass, Tactical Rock & Chaos Sigil."],
-                    ["Under-Empire", [], ["Lightning Bolt", "Liquid Green Stuff", "Sabaton"], "3 free ground passives in the Skaven tunnels."],
-                    ["The Twin-Tailed City", [], ["Chaos Sigil", "Figure Case", "Glue", "Golden Demon", "Scatter Die"], "5 free ground passives across Sigmar's metropolis."],
-                    ["Gnarlwood", [], [...SHARED_PASSIVES].sort(), "All 18 standard passives spawn on the ground across the Gnarlwood."],
-                    ["Hobby Table (AoS)", ["D6 Dice"], ["Glue", "Golden Demon", "Scatter Die", "White Dwarf"], "Free D6 Dice + Scatter Die & Golden Demon on the AoS hobby table."],
-                    ["Necropolis", [], ["Null Pendant"], "Final showdown vs. Nagash — Null Pendant spawns on the ground (with Auspex)."]
+                    createStage({name: "The Great Parch", weapons: ["Nuln Oil"], passives: ["Ardcoat", "Bandolier", "Bugman's Tankard", "Hourglass", "Sabaton", "Tape Measure"], note: "Free Nuln Oil + Hourglass & 5 other ground passives."}),
+                    createStage({name: "Skrappa Spill", weapons: ["D6 Dice"], passives: ["Dice Cube", "Gauntlet", "Kragg Blackhammer's Master Rune", "Scatter Die", "Tape Measure"], note: "Free D6 Dice + Scatter Die & Kragg Blackhammer's Master Rune for Gotrek."}),
+                    createStage({name: "Bloodwind Spoil", weapons: ["Nuln Oil"], passives: ["Bugman's Tankard", "Chaos Sigil", "Hourglass", "Tactical Rock"], note: "Free Nuln Oil + Hourglass, Tactical Rock & Chaos Sigil."}),
+                    createStage({name: "Under-Empire", weapons: [], passives: ["Lightning Bolt", "Liquid Green Stuff", "Sabaton"], note: "3 free ground passives in the Skaven tunnels."}),
+                    createStage({name: "The Twin-Tailed City", weapons: [], passives: ["Chaos Sigil", "Figure Case", "Glue", "Golden Demon", "Scatter Die"], note: "5 free ground passives across Sigmar's metropolis."}),
+                    createStage({name: "Gnarlwood", weapons: [], passives: [...SHARED_PASSIVES].sort(), note: "All 18 standard passives spawn on the ground across the Gnarlwood."}),
+                    createStage({name: "Hobby Table (AoS)", weapons: ["D6 Dice"], passives: ["Glue", "Golden Demon", "Scatter Die", "White Dwarf"], note: "Free D6 Dice + Scatter Die & Golden Demon on the AoS hobby table."}),
+                    createStage({name: "Necropolis", weapons: [], passives: ["Null Pendant"], note: "Final showdown vs. Nagash — Null Pendant spawns on the ground (with Auspex)."})
                 ],
                 weapons: [
-                    ["Tempest Axes", "Sabaton", "Whirlwind Axes"],
-                    ["Brace of Pistols", "Bandolier", "Duelling Pistols"],
-                    ["Nebulous Sea-Fog", "Bugman's Tankard", "Aquatic Illusions"],
-                    ["Fusil-Cannon", null, "Long-Fusil"],
-                    ["Boltstorm Pistol", "Dice Cube", "Typhoon Crossbow"],
-                    ["Grandblade", "Tape Measure", "Celestial Greatsword"],
-                    ["Cyclone Sword", "Magnet", "Voice of the God-King"],
-                    ["Flintlock Pistols", "Ardcoat", "Aqshian Firestakes"],
-                    ["Fyrestorm Greataxe", "Kragg Blackhammer's Master Rune", "Zangrom-Thaz"],
-                    ["Stormcharged Warhammer", "Tactical Rock", "Uskavar the Sunderer", ["Ghal Maraz", "Null Pendant"]],
-                    ["Brazier Staff", "Liquid Green Stuff", "Master of Runes"],
-                    ["Twin-Tailed Cat", "Golden Demon", "Enchanted Glove"],
-                    ["Blade of the High Heavens", "Figure Case", "Thengavar", "noTile"],
-                    ["Poisoned Throwing Knives", "Gauntlet", "Bladed Vortex"],
-                    ["Rope & Grapnel", "White Dwarf", "Ghost of Rhea", "noTile"],
-                    ["Mystical Ward", "Glue", "Warding Lantern"],
-                    ["Exotic Weaponry", null, "Artefacts of Power", "grant"],
+                    createWeapon({name: "Tempest Axes", passive: "Sabaton", evolution: "Whirlwind Axes"}),
+                    createWeapon({name: "Brace of Pistols", passive: "Bandolier", evolution: "Duelling Pistols"}),
+                    createWeapon({name: "Nebulous Sea-Fog", passive: "Bugman's Tankard", evolution: "Aquatic Illusions"}),
+                    createWeapon({name: "Fusil-Cannon", passive: null, evolution: "Long-Fusil"}),
+                    createWeapon({name: "Boltstorm Pistol", passive: "Dice Cube", evolution: "Typhoon Crossbow"}),
+                    createWeapon({name: "Grandblade", passive: "Tape Measure", evolution: "Celestial Greatsword"}),
+                    createWeapon({name: "Cyclone Sword", passive: "Magnet", evolution: "Voice of the God-King"}),
+                    createWeapon({name: "Flintlock Pistols", passive: "Ardcoat", evolution: "Aqshian Firestakes"}),
+                    createWeapon({name: "Fyrestorm Greataxe", passive: "Kragg Blackhammer's Master Rune", evolution: "Zangrom-Thaz"}),
+                    createWeapon({name: "Stormcharged Warhammer", passive: "Tactical Rock", evolution: "Uskavar the Sunderer", option: ["Ghal Maraz", "Null Pendant"]}),
+                    createWeapon({name: "Brazier Staff", passive: "Liquid Green Stuff", evolution: "Master of Runes"}),
+                    createWeapon({name: "Twin-Tailed Cat", passive: "Golden Demon", evolution: "Enchanted Glove"}),
+                    createWeapon({name: "Blade of the High Heavens", passive: "Figure Case", evolution: "Thengavar", option: CONFIG.FLAG_TYPES.NO_TILE}),
+                    createWeapon({name: "Poisoned Throwing Knives", passive: "Gauntlet", evolution: "Bladed Vortex"}),
+                    createWeapon({name: "Rope & Grapnel", passive: "White Dwarf", evolution: "Ghost of Rhea", option: CONFIG.FLAG_TYPES.NO_TILE}),
+                    createWeapon({name: "Mystical Ward", passive: "Glue", evolution: "Warding Lantern"}),
+                    createWeapon({name: "Exotic Weaponry", passive: null, evolution: "Artefacts of Power", option: CONFIG.FLAG_TYPES.GRANT}),
                     ...SHARED_WEAPONS
                 ],
                 passives: ["Kragg Blackhammer's Master Rune", "Null Pendant", ...SHARED_PASSIVES]
@@ -1020,7 +1042,7 @@
             for (const [uKey, raw] of Object.entries(RAW_GAME_DATA)) {
                 const characters = raw.characters.map(({name, weapons, passive, flag}) => ({
                     name,
-                    weapons,
+                    weapons: Array.isArray(weapons) ? weapons : [],
                     passive,
                     isAlt: flag === CONFIG.FLAG_TYPES.ALT,
                     grantType: flag && flag !== CONFIG.FLAG_TYPES.ALT ? flag : null
@@ -1111,8 +1133,8 @@
                     u: universe,
                     c: build.character || "",
                     m: build.map || "",
-                    w: build.weapons.map((w) => w.name),
-                    p: build.passives,
+                    w: (build.weapons || []).map((w) => w.name),
+                    p: build.passives || [],
                     fg: Boolean(build.freeGrantUnsealed),
                     gw: build.grantBaseWeapon || "",
                     rw: build.reliquaryEvoWeapon || ""
@@ -1214,39 +1236,11 @@
         /* ==========================================================================
            4. SYNERGY & UNIFIED TILE ENGINE
            ========================================================================== */
-        function computeDerived() {
-            const u = state.universe;
-            const uData = DATA[u];
-            const build = currentBuild();
-            const charObj = uData.charMap.get(build.character) || null;
-            const stageObj = uData.stageMap.get(build.map) || null;
-            const lockedSet = new Set(charObj ? charObj.weapons : []);
-            const bonusW = stageObj ? stageObj.weapons : [];
-            const bonusP = stageObj ? stageObj.passives : [];
 
-            const grantType = charObj ? charObj.grantType : null;
-            const hasArcheotech = u === "40k" && (grantType === CONFIG.FLAG_TYPES.ARCHEOTECH || build.freeGrantUnsealed);
-            const hasReliquary = u === "40k" && (grantType === CONFIG.FLAG_TYPES.RELIQUARY || hasArcheotech);
-            const hasExotic = u === "aos" && (grantType === CONFIG.FLAG_TYPES.EXOTIC || build.freeGrantUnsealed);
-            const grantBaseObj = (hasArcheotech || hasExotic) && build.grantBaseWeapon ? uData.weaponLookup.get(build.grantBaseWeapon) : null;
-
-            const activeWeapons = [...build.weapons];
-            if (grantBaseObj && !activeWeapons.some((w) => w.name === grantBaseObj.name)) activeWeapons.push(grantBaseObj);
-            for (const wName of bonusW) {
-                if (!activeWeapons.some((w) => w.name === wName)) {
-                    const wObj = uData.weaponLookup.get(wName);
-                    if (wObj) activeWeapons.push(wObj);
-                }
-            }
-            const activeWeaponSet = new Set(activeWeapons.map((w) => w.name));
-            const activePassives = new Set([...build.passives, ...bonusP]);
-
-            const uskavarUnlocked = u === "aos" && (
-                activeWeaponSet.has("Uskavar the Sunderer") ||
-                (activeWeaponSet.has("Stormcharged Warhammer") && activePassives.has("Tactical Rock"))
-            );
-
-            // Synergy Matrix
+        /**
+         * Computes the synergy matrix: ready pairs, missing passives, missing weapons.
+         */
+        function computeSynergyMatrix(activeWeapons, activeWeaponSet, activePassives, uData, hasReliquary, build, uskavarUnlocked) {
             const ready = [];
             const readyWeapons = new Set();
             const fullyEvolved = new Set();
@@ -1286,28 +1280,21 @@
                 }
             }
 
-            const neededPassives = new Map();
-            for (const w of activeWeapons) {
-                if (w.passive) {
-                    if (!neededPassives.has(w.passive)) neededPassives.set(w.passive, []);
-                    neededPassives.get(w.passive).push(w.name);
-                }
-                if (w.secondEvolution && w.secondEvolution.passive && uskavarUnlocked) {
-                    const sp = w.secondEvolution.passive;
-                    if (!neededPassives.has(sp)) neededPassives.set(sp, []);
-                    neededPassives.get(sp).push(`${w.evolution} (${w.name})`);
-                }
-            }
-            const matchingWeapons = new Set(uData.weapons.filter((w) => w.passive && activePassives.has(w.passive)).map((w) => w.name));
+            return { ready, readyWeapons, fullyEvolved, missingPassive, missingWeapon };
+        }
 
-            // Unified Weapon & Evolution Tiles
-            const rawWeaponTiles = [];
+        /**
+         * Builds weapon tiles from the universe data and current build state.
+         */
+        function buildWeaponTiles(uData, build, lockedSet, bonusW, readyWeapons, fullyEvolved, matchingWeapons, hasArcheotech, hasExotic, hasReliquary, grantType) {
+            const tiles = [];
+
             for (const w of uData.weapons) {
                 if (w.isSlotFreeGrant) {
                     const isAuto = (w.name === "Archeotech" && grantType === CONFIG.FLAG_TYPES.ARCHEOTECH) || (w.name === "Exotic Weaponry" && grantType === CONFIG.FLAG_TYPES.EXOTIC);
                     const isActive = isAuto || build.freeGrantUnsealed;
                     const status = isAuto ? CONFIG.TILE_STATES.AUTO : isActive ? CONFIG.TILE_STATES.GRANT : CONFIG.TILE_STATES.SEALED;
-                    rawWeaponTiles.push({
+                    tiles.push({
                         kind: "base", id: `w:${w.name}`, name: w.name, state: status, status,
                         tag: isAuto ? "CHAR" : isActive ? "0 SLOT" : "",
                         waxSeal: !isActive, brackets: true, evoReady: isActive,
@@ -1316,7 +1303,7 @@
                     });
                     if (w.evolution === "Reliquary") {
                         const evoState = grantType === CONFIG.FLAG_TYPES.RELIQUARY ? CONFIG.TILE_STATES.AUTO_RELIQUARY : hasReliquary ? CONFIG.TILE_STATES.JOB_DONE : CONFIG.TILE_STATES.DISABLED;
-                        rawWeaponTiles.push({
+                        tiles.push({
                             kind: "evolution", id: "e:Reliquary", name: "Reliquary", state: evoState, evoState,
                             tag: hasReliquary ? "0 SLOT ★" : "", tagPos: "top",
                             evoLock: !hasReliquary, brackets: hasReliquary, evoReady: hasReliquary,
@@ -1332,15 +1319,15 @@
                 const isAuto = lockedSet.has(w.name);
                 const isStage = bonusW.includes(w.name);
                 const isGrant = build.grantBaseWeapon === w.name;
-                const isSelected = !isAuto && (build.weapons.some((bw) => bw.name === w.name) || isGrant);
+                const isSelected = !isAuto && ((build.weapons || []).some((bw) => bw.name === w.name) || isGrant);
                 const status = isAuto ? CONFIG.TILE_STATES.AUTO : isStage ? CONFIG.TILE_STATES.STAGE : isGrant ? CONFIG.TILE_STATES.GRANT : isSelected ? CONFIG.TILE_STATES.SELECTED : CONFIG.TILE_STATES.SEALED;
                 const isSealed = status === CONFIG.TILE_STATES.SEALED;
                 const isEvoReady = !isSealed && readyWeapons.has(w.name);
                 const isNeedsUpgrade = !isSealed && !fullyEvolved.has(w.name);
                 const isSynergized = isSealed && matchingWeapons.has(w.name);
-                const isFull = isSealed && build.weapons.length >= CONFIG.SLOTS.MAX_WEAPONS;
+                const isFull = isSealed && (build.weapons || []).length >= CONFIG.SLOTS.MAX_WEAPONS;
 
-                rawWeaponTiles.push({
+                tiles.push({
                     kind: "base", id: `w:${w.name}`, name: w.name,
                     state: isSynergized ? CONFIG.TILE_STATES.SYNERGY : status, status,
                     tag: isSynergized ? "★" : status === CONFIG.TILE_STATES.AUTO ? "CHAR" : status === CONFIG.TILE_STATES.GRANT ? "FREE" : status === CONFIG.TILE_STATES.STAGE ? "STAGE" : status === CONFIG.TILE_STATES.SELECTED ? "✓" : "",
@@ -1359,7 +1346,7 @@
                     if (evoCharLocked) {
                         const evoStart = uData.weaponLookup.get(w.evolution);
                         const evoReady = !evoStart?.passive || readyWeapons.has(w.evolution);
-                        rawWeaponTiles.push({
+                        tiles.push({
                             kind: "base", id: `w:${w.evolution}`, name: w.evolution,
                             state: CONFIG.TILE_STATES.AUTO, status: CONFIG.TILE_STATES.AUTO, tag: "CHAR", brackets: true,
                             evoReady, needsUpgrade: Boolean(evoStart?.passive) && !evoReady,
@@ -1368,7 +1355,7 @@
                         });
                     } else {
                         const evoState = relBypass ? CONFIG.TILE_STATES.JOB_DONE : isSealed ? CONFIG.TILE_STATES.DISABLED : isEvoReady ? CONFIG.TILE_STATES.JOB_DONE : CONFIG.TILE_STATES.UPGRADE_ME;
-                        rawWeaponTiles.push({
+                        tiles.push({
                             kind: "evolution", id: `e:${w.evolution}`, name: w.evolution,
                             state: evoState, evoState, passiveName: w.passive,
                             tag: evoState === CONFIG.TILE_STATES.JOB_DONE ? "DONE ★" : evoState === CONFIG.TILE_STATES.UPGRADE_ME ? "! UPGRADE" : "",
@@ -1387,13 +1374,19 @@
                 }
             }
 
-            // Unified Passive Tiles
-            const rawPassiveTiles = uData.passives.map((pName) => {
-                const status = bonusP.includes(pName) ? CONFIG.TILE_STATES.STAGE : build.passives.includes(pName) ? CONFIG.TILE_STATES.SELECTED : CONFIG.TILE_STATES.SEALED;
+            return tiles;
+        }
+
+        /**
+         * Builds passive tiles from the universe data and current build state.
+         */
+        function buildPassiveTiles(uData, build, bonusP, neededPassives, readyWeapons, fullyEvolved, uskavarUnlocked) {
+            return uData.passives.map((pName) => {
+                const status = bonusP.includes(pName) ? CONFIG.TILE_STATES.STAGE : (build.passives || []).includes(pName) ? CONFIG.TILE_STATES.SELECTED : CONFIG.TILE_STATES.SEALED;
                 const isSealed = status === CONFIG.TILE_STATES.SEALED;
                 const neededBy = neededPassives.get(pName) || [];
                 const isSynergized = isSealed && neededBy.length > 0;
-                const isFull = isSealed && build.passives.length >= CONFIG.SLOTS.MAX_PASSIVES;
+                const isFull = isSealed && (build.passives || []).length >= CONFIG.SLOTS.MAX_PASSIVES;
                 const directW = uData.weapons.filter((w) => w.passive === pName);
                 const secondW = uData.weapons.filter((w) => w.secondEvolution?.passive === pName);
                 const targets = [
@@ -1416,7 +1409,68 @@
                     detail: targets.length ? `Evolves: ${targets.join(", ")}` : "Utility Passive"
                 };
             });
+        }
 
+        /**
+         * Main orchestrator: computes all derived state from the current build.
+         */
+        function computeDerived() {
+            const u = state.universe;
+            const uData = DATA[u];
+            const build = currentBuild();
+            const charObj = uData.charMap.get(build.character) || null;
+            const stageObj = uData.stageMap.get(build.map) || null;
+            const lockedSet = new Set(charObj ? charObj.weapons : []);
+            const bonusW = stageObj ? stageObj.weapons : [];
+            const bonusP = stageObj ? stageObj.passives : [];
+
+            const grantType = charObj ? charObj.grantType : null;
+            const hasArcheotech = u === "40k" && (grantType === CONFIG.FLAG_TYPES.ARCHEOTECH || build.freeGrantUnsealed);
+            const hasReliquary = u === "40k" && (grantType === CONFIG.FLAG_TYPES.RELIQUARY || hasArcheotech);
+            const hasExotic = u === "aos" && (grantType === CONFIG.FLAG_TYPES.EXOTIC || build.freeGrantUnsealed);
+            const grantBaseObj = (hasArcheotech || hasExotic) && build.grantBaseWeapon ? uData.weaponLookup.get(build.grantBaseWeapon) : null;
+
+            const activeWeapons = [...(build.weapons || [])];
+            if (grantBaseObj && !activeWeapons.some((w) => w.name === grantBaseObj.name)) activeWeapons.push(grantBaseObj);
+            for (const wName of bonusW) {
+                if (!activeWeapons.some((w) => w.name === wName)) {
+                    const wObj = uData.weaponLookup.get(wName);
+                    if (wObj) activeWeapons.push(wObj);
+                }
+            }
+            const activeWeaponSet = new Set(activeWeapons.map((w) => w.name));
+            const activePassives = new Set([...(build.passives || []), ...bonusP]);
+
+            const uskavarUnlocked = u === "aos" && (
+                activeWeaponSet.has("Uskavar the Sunderer") ||
+                (activeWeaponSet.has("Stormcharged Warhammer") && activePassives.has("Tactical Rock"))
+            );
+
+            // Compute synergy matrix
+            const { ready, readyWeapons, fullyEvolved, missingPassive, missingWeapon } = computeSynergyMatrix(
+                activeWeapons, activeWeaponSet, activePassives, uData, hasReliquary, build, uskavarUnlocked
+            );
+
+            // Compute needed passives map
+            const neededPassives = new Map();
+            for (const w of activeWeapons) {
+                if (w.passive) {
+                    if (!neededPassives.has(w.passive)) neededPassives.set(w.passive, []);
+                    neededPassives.get(w.passive).push(w.name);
+                }
+                if (w.secondEvolution && w.secondEvolution.passive && uskavarUnlocked) {
+                    const sp = w.secondEvolution.passive;
+                    if (!neededPassives.has(sp)) neededPassives.set(sp, []);
+                    neededPassives.get(sp).push(`${w.evolution} (${w.name})`);
+                }
+            }
+            const matchingWeapons = new Set(uData.weapons.filter((w) => w.passive && activePassives.has(w.passive)).map((w) => w.name));
+
+            // Build tiles
+            const rawWeaponTiles = buildWeaponTiles(uData, build, lockedSet, bonusW, readyWeapons, fullyEvolved, matchingWeapons, hasArcheotech, hasExotic, hasReliquary, grantType);
+            const rawPassiveTiles = buildPassiveTiles(uData, build, bonusP, neededPassives, readyWeapons, fullyEvolved, uskavarUnlocked);
+
+            // Apply search/filter and coordinates
             const applyCoordsAndFilter = (tiles) => {
                 const q = state.gridSearch.trim().toLowerCase();
                 return tiles
@@ -1457,7 +1511,7 @@
             if (!nextChar) {
                 updateBuild({
                     character: null,
-                    weapons: build.weapons.filter((w) => !oldLocked.has(w.name)),
+                    weapons: (build.weapons || []).filter((w) => !oldLocked.has(w.name)),
                     grantBaseWeapon: build.freeGrantUnsealed ? build.grantBaseWeapon : "",
                     reliquaryEvoWeapon: build.freeGrantUnsealed ? build.reliquaryEvoWeapon : ""
                 });
@@ -1468,7 +1522,7 @@
 
             const newLockedObjs = nextChar.weapons.map((w) => uData.weaponLookup.get(w)).filter((w) => w && !w.isSlotFreeGrant);
             const newLockedSet = new Set(newLockedObjs.map((w) => w.name));
-            let kept = build.weapons.filter((w) => !oldLocked.has(w.name) && !newLockedSet.has(w.name));
+            let kept = (build.weapons || []).filter((w) => !oldLocked.has(w.name) && !newLockedSet.has(w.name));
             const maxExtra = Math.max(0, CONFIG.SLOTS.MAX_WEAPONS - newLockedObjs.length);
             if (kept.length > maxExtra) kept = kept.slice(0, maxExtra);
 
@@ -1496,8 +1550,8 @@
             const bonusP = stage ? stage.passives : [];
             updateBuild({
                 map: mapName,
-                weapons: build.weapons.filter((w) => lockedSet.has(w.name) || !bonusW.includes(w.name)),
-                passives: build.passives.filter((p) => !bonusP.includes(p))
+                weapons: (build.weapons || []).filter((w) => lockedSet.has(w.name) || !bonusW.includes(w.name)),
+                passives: (build.passives || []).filter((p) => !bonusP.includes(p))
             });
         }
 
@@ -1523,11 +1577,11 @@
             const stageObj = uData.stageMap.get(build.map);
             if (charObj?.weapons.includes(wName) || stageObj?.weapons.includes(wName)) return;
 
-            const exists = build.weapons.some((w) => w.name === wName);
+            const exists = (build.weapons || []).some((w) => w.name === wName);
             if (exists) {
-                updateBuild({ weapons: build.weapons.filter((w) => w.name !== wName) });
-            } else if (build.weapons.length < CONFIG.SLOTS.MAX_WEAPONS) {
-                updateBuild({ weapons: [...build.weapons, wObj] });
+                updateBuild({ weapons: (build.weapons || []).filter((w) => w.name !== wName) });
+            } else if ((build.weapons || []).length < CONFIG.SLOTS.MAX_WEAPONS) {
+                updateBuild({ weapons: [...(build.weapons || []), wObj] });
             }
         }
 
@@ -1537,10 +1591,10 @@
             const stageObj = uData.stageMap.get(build.map);
             if (!pName || stageObj?.passives.includes(pName)) return;
 
-            if (build.passives.includes(pName)) {
-                updateBuild({ passives: build.passives.filter((p) => p !== pName) });
-            } else if (build.passives.length < CONFIG.SLOTS.MAX_PASSIVES) {
-                updateBuild({ passives: [...build.passives, pName] });
+            if ((build.passives || []).includes(pName)) {
+                updateBuild({ passives: (build.passives || []).filter((p) => p !== pName) });
+            } else if ((build.passives || []).length < CONFIG.SLOTS.MAX_PASSIVES) {
+                updateBuild({ passives: [...(build.passives || []), pName] });
             }
         }
 
@@ -1579,7 +1633,7 @@
             if (!q || (sel && q === sel.toLowerCase())) return uData.characters;
             return uData.characters.filter((c) =>
                 c.name.toLowerCase().includes(q) ||
-                c.weapons.some((w) => w.toLowerCase().includes(q)) ||
+                (c.weapons && c.weapons.some((w) => w.toLowerCase().includes(q))) ||
                 (c.passive && c.passive.toLowerCase().includes(q)) ||
                 (c.grantType && c.grantType.toLowerCase().includes(q))
             );
@@ -1769,7 +1823,7 @@
                 ddEl.innerHTML = list.length === 0
                     ? `<div class="ws-meta" style="padding:0.625rem 0.75rem;font-style:italic">No survivors match "${esc(state.charQuery)}"</div>`
                     : list.map((c, idx) => {
-                        const rightTag = c.weapons.length
+                        const rightTag = (c.weapons && c.weapons.length)
                             ? `${svg("lock", 10)}${esc(c.weapons.join(" + "))}`
                             : `<span style="color:${c.grantType === CONFIG.FLAG_TYPES.RELIQUARY ? "#fde047" : "#5eead4"}">${c.grantType === CONFIG.FLAG_TYPES.ARCHEOTECH ? "Archeotech (Free Choice)" : c.grantType === CONFIG.FLAG_TYPES.RELIQUARY ? "Reliquary (Free Evo)" : "Exotic Weaponry (Free Choice)"}</span>`;
                         return `<button type="button" class="ws-dd-item" data-action="select-char" data-name="${esc(c.name)}" data-idx="${idx}" data-selected="${c.name === build.character}" data-active="${idx === state.charHighlight}">` +
@@ -1782,7 +1836,7 @@
             const charCallout = document.getElementById("ws-char-callout");
             charCallout.innerHTML = charObj ? `<div class="ws-callout" data-tone="char">` +
                 `<div class="ws-between" style="flex-wrap:wrap;gap:0.5rem">` +
-                (charObj.weapons.length
+                (charObj && charObj.weapons && charObj.weapons.length
                     ? `<span class="ws-row-sm" style="color:rgba(253,230,138,0.9)">${svg("lock", 14)}<span>Locked ${charObj.weapons.length > 1 ? "Weapons" : "Weapon"}:</span></span><div class="ws-row-wrap">${charObj.weapons.map((w) => `<span class="ws-pill" data-tone="char">${esc(w)}</span>`).join("")}</div>`
                     : `<span class="ws-row-sm" style="color:#5eead4">${svg("wand", 14)}<span>${charObj.grantType === CONFIG.FLAG_TYPES.ARCHEOTECH ? "Starts with Archeotech + Reliquary (0 Weapon Slots Used)" : charObj.grantType === CONFIG.FLAG_TYPES.RELIQUARY ? "Starts with Reliquary (Free Evolved Weapon • 0 Slots Used)" : "Starts with Exotic Weaponry (Free Weapon Choice • 0 Slots Used)"}</span></span>`) +
                 `</div>` +
@@ -1836,11 +1890,11 @@
                 `</div>` +
                 (d.missingPassive.length ? `<div class="ws-divider-top ws-stack-sm">` +
                     `<div class="ws-section-label" style="color:#fbbf24">${svg("flame", 14)}<span>Missing Passives for Active Weapons (${d.missingPassive.length})</span></div>` +
-                    `<div class="ws-stack-xs">${d.missingPassive.map((m) => `<button type="button" class="ws-matrix-card" data-action="toggle-passive" data-name="${esc(m.passive)}"${build.passives.length >= CONFIG.SLOTS.MAX_PASSIVES ? " disabled" : ""}><div class="ws-min-0"><div class="ws-truncate" style="font-weight:600">Need <strong style="color:#e879f9">${esc(m.passive)}</strong></div><div class="ws-truncate ws-meta">${esc(`${m.weapon} → ${m.evolution}`)}</div></div><span class="ws-pill" data-tone="synergy">+ Equip</span></button>`).join("")}</div>` +
+                    `<div class="ws-stack-xs">${d.missingPassive.map((m) => `<button type="button" class="ws-matrix-card" data-action="toggle-passive" data-name="${esc(m.passive)}"${(build.passives || []).length >= CONFIG.SLOTS.MAX_PASSIVES ? " disabled" : ""}><div class="ws-min-0"><div class="ws-truncate" style="font-weight:600">Need <strong style="color:#e879f9">${esc(m.passive)}</strong></div><div class="ws-truncate ws-meta">${esc(`${m.weapon} → ${m.evolution}`)}</div></div><span class="ws-pill" data-tone="synergy">+ Equip</span></button>`).join("")}</div>` +
                     `</div>` : "") +
                 (d.missingWeapon.length ? `<div class="ws-divider-top ws-stack-sm">` +
                     `<div class="ws-section-label" style="color:#e879f9"><span>Synergistic Weapons for Active Passives (${d.missingWeapon.length})</span></div>` +
-                    `<div class="ws-stack-xs">${d.missingWeapon.map((m) => `<button type="button" class="ws-matrix-card" data-action="toggle-weapon" data-name="${esc(m.weapon)}"${build.weapons.length >= CONFIG.SLOTS.MAX_WEAPONS ? " disabled" : ""}><div class="ws-min-0"><div class="ws-truncate" style="font-weight:600">Unseal <strong style="color:#e879f9">${esc(m.weapon)}</strong></div><div class="ws-truncate ws-meta">${esc(`Pairs with ${m.passive} → ${m.evolution}`)}</div></div><span class="ws-pill" data-tone="synergy">+ Equip</span></button>`).join("")}</div>` +
+                    `<div class="ws-stack-xs">${d.missingWeapon.map((m) => `<button type="button" class="ws-matrix-card" data-action="toggle-weapon" data-name="${esc(m.weapon)}"${(build.weapons || []).length >= CONFIG.SLOTS.MAX_WEAPONS ? " disabled" : ""}><div class="ws-min-0"><div class="ws-truncate" style="font-weight:600">Unseal <strong style="color:#e879f9">${esc(m.weapon)}</strong></div><div class="ws-truncate ws-meta">${esc(`Pairs with ${m.passive} → ${m.evolution}`)}</div></div><span class="ws-pill" data-tone="synergy">+ Equip</span></button>`).join("")}</div>` +
                     `</div>` : "");
 
             const searchInput = document.getElementById("ws-grid-search");
@@ -1863,7 +1917,7 @@
 
             const anyGrantActive = d.hasArcheotech || d.hasReliquary || d.hasExotic;
             document.getElementById("ws-weapons-meta").innerHTML =
-                `<span class="ws-mono-pill">Slots: <strong>${build.weapons.length}</strong> / ${CONFIG.SLOTS.MAX_WEAPONS}</span>` +
+                `<span class="ws-mono-pill">Slots: <strong>${(build.weapons || []).length}</strong> / ${CONFIG.SLOTS.MAX_WEAPONS}</span>` +
                 (anyGrantActive ? `<span class="ws-pill" data-tone="grant">+Free Choice</span>` : "") +
                 (d.bonusW.length ? `<span class="ws-pill" data-tone="stage">+${d.bonusW.length} Stage</span>` : "");
 
@@ -1872,7 +1926,7 @@
                 : `<div class="ws-grid-empty">No weapon or evolution tiles match the current filter.</div>`;
 
             document.getElementById("ws-passives-meta").innerHTML =
-                `<span class="ws-mono-pill">Slots: <strong>${build.passives.length}</strong> / ${CONFIG.SLOTS.MAX_PASSIVES}</span>` +
+                `<span class="ws-mono-pill">Slots: <strong>${(build.passives || []).length}</strong> / ${CONFIG.SLOTS.MAX_PASSIVES}</span>` +
                 (d.bonusP.length ? `<span class="ws-pill" data-tone="stage">+${d.bonusP.length} Stage</span>` : "");
 
             document.getElementById("ws-passives-grid").innerHTML = d.passiveTiles.length
