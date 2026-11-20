@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Warhammer Survivors Bit Box Planner</title>
+    <style>
+        /* ==========================================================================
+           1. DESIGN TOKENS & UNIVERSE THEMES
+           ========================================================================== */
+        :root {
+            --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            --radius-sm: 0.25rem;
+            --radius-md: 0.375rem;
+            --radius-lg: 0.5rem;
+
+            --zinc-950: #09090b;
+            --zinc-900: #18181b;
+            --zinc-800: #27272a;
+            --zinc-700: #3f3f46;
+            --zinc-500: #71717a;
+            --zinc-400: #a1a1aa;
+            --zinc-300: #d4d4d8;
+            --zinc-200: #e4e4e7;
+            --zinc-100: #f4f4f5;
+
+            /* Semantic State Tones */
+            --tone-char-bg: rgba(69, 26, 3, 0.75);     --tone-char-bd: #fbbf24;     --tone-char-fg: #fcd34d;
+            --tone-selected-bg: rgba(6, 78, 59, 0.7);  --tone-selected-bd: #34d399; --tone-selected-fg: #6ee7b7;
+            --tone-stage-bg: rgba(12, 74, 110, 0.7);   --tone-stage-bd: #38bdf8;    --tone-stage-fg: #7dd3fc;
+            --tone-grant-bg: rgba(19, 78, 74, 0.75);   --tone-grant-bd: #2dd4bf;    --tone-grant-fg: #99f6e4;
+            --tone-synergy-bg: rgba(74, 4, 78, 0.8);   --tone-synergy-bd: #e879f9;  --tone-synergy-fg: #f5d0fe;
+            --tone-upgrade-bg: rgba(67, 20, 7, 0.85);  --tone-upgrade-bd: #fb923c;  --tone-upgrade-fg: #fed7aa;
+            --tone-done-bg: rgba(66, 32, 6, 0.85);     --tone-done-bd: #fde047;     --tone-done-fg: #fef08a;
+            --tone-sealed-bg: rgba(69, 10, 10, 0.75);  --tone-sealed-bd: #dc2626;   --tone-sealed-fg: #fca5a5;
+            --tone-muted-bg: #18181b;                  --tone-muted-bd: #3f3f46;    --tone-muted-fg: #71717a;
+            --tone-alt-bg: rgba(59, 7, 100, 0.9);      --tone-alt-bd: rgba(147, 51, 234, 0.8); --tone-alt-fg: #e9d5ff;
+
+            /* 40K Default Theme */
+            --bg-page: #060907;
+            --bg-pattern: repeating-linear-gradient(0deg, rgba(16, 185, 129, 0.03) 0 1px, transparent 1px 3px);
+            --bg-header: rgba(10, 16, 12, 0.95);
+            --bd-header: #1e3528;
+            --header-top: transparent;
+            --bg-panel: #0b110d;
+            --bd-panel: #1c3326;
+            --bd-divider: #192e22;
+            --bg-subpanel: #060907;
+            --accent-1: #34d399;
+            --accent-2: #34d399;
+            --accent-soft: rgba(6, 78, 59, 0.9);
+            --accent-soft-fg: #a7f3d0;
+            --accent-bd: rgba(16, 185, 129, 0.8);
+            --accent-glow: rgba(16, 185, 129, 0.2);
+            --subtitle-fg: rgba(167, 243, 208, 0.6);
+            --emblem-bg: #0e1f15;
+            --emblem-bd: rgba(4, 120, 87, 0.8);
+            --box-bg: #070b09;
+            --box-bd: rgba(5, 150, 105, 0.8);
+            --box-glow: rgba(16, 185, 129, 0.12);
+            --dd-hover-bg: #122018;
+            --dd-hover-fg: #d1fae5;
+            --bracket-top: #a1a1aa;
+            --bracket-side: #71717a;
+        }
+
+        [data-universe="aos"] {
+            --bg-page: #070a12;
+            --bg-pattern:
+                    radial-gradient(circle at 75% 25%, rgba(234, 179, 8, 0.06), transparent 55%),
+                    radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.05), transparent 50%);
+            --bg-header: rgba(12, 17, 30, 0.95);
+            --bd-header: rgba(180, 83, 9, 0.5);
+            --header-top: rgba(251, 191, 36, 0.8);
+            --bg-panel: #0c111d;
+            --bd-panel: rgba(146, 64, 14, 0.5);
+            --bd-divider: rgba(120, 53, 15, 0.5);
+            --bg-subpanel: #070b14;
+            --accent-1: #38bdf8;
+            --accent-2: #fbbf24;
+            --accent-soft: rgba(69, 26, 3, 0.9);
+            --accent-soft-fg: #fde68a;
+            --accent-bd: rgba(251, 191, 36, 0.8);
+            --accent-glow: rgba(245, 158, 11, 0.25);
+            --subtitle-fg: rgba(254, 243, 199, 0.6);
+            --emblem-bg: #17140b;
+            --emblem-bd: rgba(245, 158, 11, 0.8);
+            --box-bg: #080c16;
+            --box-bd: rgba(245, 158, 11, 0.75);
+            --box-glow: rgba(245, 158, 11, 0.14);
+            --dd-hover-bg: #141c30;
+            --dd-hover-fg: #fef3c7;
+            --bracket-top: #fcd34d;
+            --bracket-side: #f59e0b;
+        }
+
+        /* ==========================================================================
+           2. RESET, LAYOUT & UTILITIES
+           ========================================================================== */
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: var(--font-sans);
+            background: var(--bg-page);
+            color: var(--zinc-200);
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background: #d97706; color: var(--zinc-950); }
+        button, input, select { font: inherit; color: inherit; }
+        button { cursor: pointer; background: none; border: 0; padding: 0; }
+        button:disabled { cursor: not-allowed; opacity: 0.5; }
+        [hidden] { display: none !important; }
+
+        .ws-app {
+            min-height: 100vh;
+            background-color: var(--bg-page);
+            background-image: var(--bg-pattern);
+            padding-bottom: 4rem;
+            transition: background-color 0.25s ease;
+        }
+        .ws-container { max-width: 80rem; margin-inline: auto; padding-inline: 1rem; }
+        .ws-layout { display: grid; grid-template-columns: 1fr; gap: 1.5rem; padding-top: 1.5rem; }
+        @media (min-width: 1024px) {
+            .ws-layout { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+            .ws-col-left { grid-column: span 5; }
+            .ws-col-right { grid-column: span 7; }
+        }
+
+        .ws-stack { display: flex; flex-direction: column; gap: 1.5rem; }
+        .ws-stack-md { display: flex; flex-direction: column; gap: 0.75rem; }
+        .ws-stack-sm { display: flex; flex-direction: column; gap: 0.5rem; }
+        .ws-stack-xs { display: flex; flex-direction: column; gap: 0.375rem; }
+        .ws-row { display: flex; align-items: center; gap: 0.5rem; }
+        .ws-row-sm { display: flex; align-items: center; gap: 0.375rem; }
+        .ws-row-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; }
+        .ws-between { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+        .ws-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ws-min-0 { min-width: 0; }
+        .ws-shrink-0 { flex-shrink: 0; }
+        .ws-flex-1 { flex: 1; }
+        .ws-rel { position: relative; }
+        .ws-mono { font-family: var(--font-mono); }
+        .ws-meta { font-size: 0.6875rem; color: var(--zinc-400); }
+        .ws-empty {
+            margin: 0;
+            padding: 0.625rem;
+            font-size: 0.75rem;
+            color: var(--zinc-500);
+            font-style: italic;
+            background: var(--bg-subpanel);
+            border: 1px solid var(--bd-panel);
+            border-radius: var(--radius-sm);
+        }
+        .ws-grid-empty { padding-block: 2rem; text-align: center; font-size: 0.75rem; color: var(--zinc-500); font-style: italic; }
+
+        /* ==========================================================================
+           3. HEADER, BUTTONS & SEGMENTED TABS
+           ========================================================================== */
+        .ws-header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--bd-header);
+            border-top: 2px solid var(--header-top);
+            backdrop-filter: blur(6px);
+        }
+        .ws-header-inner {
+            padding-block: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+        .ws-emblem {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: var(--radius-md);
+            background: var(--emblem-bg);
+            border: 1px solid var(--emblem-bd);
+            box-shadow: inset 0 0 12px var(--accent-glow);
+            color: var(--accent-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .ws-title {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--zinc-100);
+            line-height: 1.1;
+        }
+        @media (min-width: 640px) { .ws-title { font-size: 1.125rem; } }
+        .ws-title span { color: var(--accent-2); }
+        .ws-subtitle { margin: 0.25rem 0 0; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--subtitle-fg); }
+
+        .ws-segmented {
+            display: inline-flex;
+            padding: 0.25rem;
+            border-radius: var(--radius-md);
+            background: var(--bg-subpanel);
+            border: 1px solid var(--bd-panel);
+            gap: 0.125rem;
+        }
+        .ws-seg-btn {
+            padding: 0.25rem 0.625rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--zinc-400);
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: color 0.15s, background-color 0.15s;
+        }
+        .ws-seg-btn:hover { color: var(--zinc-200); }
+        .ws-seg-btn[aria-pressed="true"] {
+            background: var(--accent-soft);
+            color: var(--accent-soft-fg);
+            border-color: var(--accent-bd);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .ws-seg-btn[data-variant="synergy"][aria-pressed="true"] {
+            background: var(--tone-synergy-bg);
+            color: var(--tone-synergy-fg);
+            border-color: var(--tone-synergy-bd);
+        }
+        .ws-seg-count {
+            padding: 0 0.25rem;
+            border-radius: 2px;
+            background: #d946ef;
+            color: var(--zinc-950);
+            font-size: 0.5625rem;
+            font-weight: 900;
+            line-height: 1.3;
+        }
+
+        .ws-btn {
+            padding: 0.375rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            border: 1px solid var(--zinc-800);
+            background: var(--zinc-950);
+            color: var(--zinc-400);
+            flex-shrink: 0;
+            transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .ws-btn:hover { border-color: #991b1b; background: rgba(69, 10, 10, 0.45); color: #fca5a5; }
+        .ws-btn[data-variant="share"] { background: rgba(6, 78, 59, 0.75); border-color: rgba(5, 150, 105, 0.8); color: #a7f3d0; }
+        .ws-btn[data-variant="share"]:hover { background: rgba(6, 95, 70, 0.85); color: #ecfdf5; }
+        .ws-btn[data-variant="primary"] { background: #059669; border-color: #10b981; color: var(--zinc-950); }
+        .ws-btn[data-variant="primary"]:hover { background: #10b981; }
+        .ws-btn[data-variant="amber"] { background: #d97706; border-color: #f59e0b; color: var(--zinc-950); }
+        .ws-btn[data-variant="amber"]:hover { background: #f59e0b; }
+
+        .ws-hide-mobile { display: none; }
+        @media (min-width: 640px) { .ws-hide-mobile { display: inline; } }
+
+        /* ==========================================================================
+           4. PANELS, INPUTS, DROPDOWN & CALLOUTS
+           ========================================================================== */
+        .ws-panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--bd-panel);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.55);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .ws-panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--bd-divider);
+        }
+        .ws-heading, .ws-sub-heading {
+            margin: 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .ws-heading { font-size: 0.875rem; letter-spacing: 0.08em; }
+        .ws-sub-heading { font-size: 0.75rem; letter-spacing: 0.06em; }
+        .ws-heading svg, .ws-sub-heading svg { color: var(--accent-2); }
+
+        .ws-section-label {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        .ws-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--zinc-400);
+            margin-bottom: 0.375rem;
+        }
+        .ws-label-sm { font-size: 0.6875rem; }
+
+        .ws-input-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--zinc-500); pointer-events: none; display: flex; }
+        .ws-input-clear { position: absolute; right: 0.625rem; top: 50%; transform: translateY(-50%); color: var(--zinc-500); display: flex; }
+        .ws-input-clear:hover { color: #f87171; }
+
+        .ws-input, .ws-select {
+            width: 100%;
+            background: var(--bg-subpanel);
+            border: 1px solid var(--bd-panel);
+            border-radius: var(--radius-md);
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--zinc-100);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+        .ws-input.has-icon { padding-left: 2rem; padding-right: 1.75rem; }
+        .ws-input::placeholder { color: var(--zinc-500); }
+        .ws-input:focus, .ws-select:focus { border-color: var(--accent-bd); }
+
+        .ws-dropdown {
+            position: absolute;
+            z-index: 40;
+            margin-top: 0.25rem;
+            width: 100%;
+            max-height: 18rem;
+            overflow-y: auto;
+            background: var(--bg-subpanel);
+            border: 1px solid var(--bd-panel);
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.85);
+        }
+        .ws-dd-item {
+            width: 100%;
+            text-align: left;
+            padding: 0.625rem 0.75rem;
+            border-bottom: 1px solid var(--zinc-900);
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            color: var(--zinc-300);
+            font-size: 0.75rem;
+        }
+        .ws-dd-item:last-child { border-bottom: 0; }
+        .ws-dd-item[data-active="true"] { background: var(--dd-hover-bg); color: var(--dd-hover-fg); }
+        .ws-dd-item[data-selected="true"] { background: var(--accent-soft); color: var(--accent-soft-fg); }
+
+        .ws-callout {
+            margin-top: 0.5rem;
+            padding: 0.625rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: var(--c-bg, var(--bg-subpanel));
+            border: 1px solid var(--c-bd, var(--bd-panel));
+        }
+        .ws-callout[data-tone="char"]  { --c-bg: rgba(69, 26, 3, 0.3);  --c-bd: rgba(180, 83, 9, 0.6); }
+        .ws-callout[data-tone="stage"] { --c-bg: rgba(8, 47, 73, 0.25); --c-bd: rgba(7, 89, 133, 0.6); }
+        .ws-callout[data-tone="grant"] { --c-bg: rgba(4, 47, 46, 0.3);  --c-bd: rgba(15, 118, 110, 0.7); margin-top: 0; }
+        .ws-callout[data-tone="done"]  { --c-bg: rgba(66, 32, 6, 0.3);  --c-bd: rgba(202, 138, 4, 0.7); margin-top: 0; }
+        .ws-trait-box {
+            padding-top: 0.375rem;
+            border-top: 1px solid rgba(146, 64, 14, 0.4);
+            font-size: 0.6875rem;
+            color: var(--zinc-300);
+            line-height: 1.5;
+        }
+        .ws-divider-top { padding-top: 0.5rem; border-top: 1px solid rgba(39, 39, 42, 0.8); }
+
+        /* ==========================================================================
+           5. SEMANTIC PILLS & SYNERGY MATRIX CARDS
+           ========================================================================== */
+        .ws-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: var(--radius-sm);
+            background: var(--p-bg, var(--bg-subpanel));
+            border: 1px solid var(--p-bd, var(--bd-panel));
+            color: var(--p-fg, var(--zinc-300));
+            font-size: 0.625rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+        .ws-pill[data-tone="char"]     { --p-bg: var(--tone-char-bg);     --p-bd: var(--tone-char-bd);     --p-fg: var(--tone-char-fg); }
+        .ws-pill[data-tone="selected"] { --p-bg: var(--tone-selected-bg); --p-bd: var(--tone-selected-bd); --p-fg: var(--tone-selected-fg); }
+        .ws-pill[data-tone="stage"]    { --p-bg: var(--tone-stage-bg);    --p-bd: var(--tone-stage-bd);    --p-fg: var(--tone-stage-fg); }
+        .ws-pill[data-tone="grant"]    { --p-bg: var(--tone-grant-bg);    --p-bd: var(--tone-grant-bd);    --p-fg: var(--tone-grant-fg); }
+        .ws-pill[data-tone="synergy"]  { --p-bg: var(--tone-synergy-bg);  --p-bd: var(--tone-synergy-bd);  --p-fg: var(--tone-synergy-fg); }
+        .ws-pill[data-tone="upgrade"]  { --p-bg: var(--tone-upgrade-bg);  --p-bd: var(--tone-upgrade-bd);  --p-fg: var(--tone-upgrade-fg); }
+        .ws-pill[data-tone="done"]     { --p-bg: var(--tone-done-bg);     --p-bd: var(--tone-done-bd);     --p-fg: var(--tone-done-fg); }
+        .ws-pill[data-tone="sealed"]   { --p-bg: var(--tone-sealed-bg);   --p-bd: var(--tone-sealed-bd);   --p-fg: var(--tone-sealed-fg); }
+        .ws-pill[data-tone="muted"]    { --p-bg: var(--tone-muted-bg);    --p-bd: var(--tone-muted-bd);    --p-fg: var(--tone-muted-fg); }
+        .ws-pill[data-tone="alt"]      { --p-bg: var(--tone-alt-bg);      --p-bd: var(--tone-alt-bd);      --p-fg: var(--tone-alt-fg); font-size: 9px; padding: 0 4px; }
+
+        .ws-mono-pill {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-subpanel);
+            border: 1px solid var(--bd-panel);
+            color: var(--zinc-300);
+        }
+        .ws-mono-pill strong { color: #fcd34d; }
+
+        .ws-matrix-card {
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-subpanel);
+            border: 1px solid var(--bd-panel);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            transition: background-color 0.15s, border-color 0.15s;
+        }
+        .ws-matrix-card[data-state="ready"]     { background: rgba(6, 78, 59, 0.3); border-color: rgba(4, 120, 87, 0.7); }
+        .ws-matrix-card[data-state="reliquary"] { background: rgba(66, 32, 6, 0.35); border-color: rgba(234, 179, 8, 0.8); }
+        button.ws-matrix-card:hover:not(:disabled) { background: rgba(74, 4, 78, 0.25); border-color: rgba(192, 38, 211, 0.7); }
+
+        /* ==========================================================================
+           6. BIT BOX INSPECTOR, GRID, UNIFIED TILE & SINGLE-ATLAS SPRITE
+           ========================================================================== */
+        .ws-toolbar { display: flex; flex-direction: column; gap: 0.625rem; }
+        @media (min-width: 640px) { .ws-toolbar { flex-direction: row; align-items: center; justify-content: space-between; } }
+
+        .ws-inspector {
+            background: var(--bg-subpanel);
+            border: 1px solid var(--bd-panel);
+            border-radius: var(--radius-md);
+            padding: 0.625rem 0.875rem;
+            min-height: 3.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+        .ws-inspector-thumb {
+            width: 2rem;
+            height: 2rem;
+            border-radius: var(--radius-sm);
+            background: var(--zinc-900);
+            border: 1px solid var(--zinc-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .ws-inspector-thumb .ws-sprite-icon { width: 1.5rem; height: 1.5rem; }
+
+        .ws-bitbox {
+            background: var(--box-bg);
+            border: 2px solid var(--box-bd);
+            box-shadow: 0 0 20px var(--box-glow);
+            border-radius: var(--radius-lg);
+            padding: 0.75rem;
+        }
+        .ws-grid { display: grid; grid-template-columns: repeat(var(--grid-cols, 8), minmax(0, 1fr)); gap: 0.5rem; }
+        @media (min-width: 640px) { .ws-grid { gap: 0.625rem; } }
+
+        .ws-tile {
+            --t-bg: #170606;
+            --t-bd: #ef4444;
+            --t-bd-hover: #f87171;
+            --t-inset: #450a0a;
+            --t-glow: transparent;
+            --t-bar: none;
+            --t-bar-inset: 0.25rem;
+            --t-bar-h: 42%;
+            --t-tag-bg: transparent;
+            --t-filter: brightness(0.45) saturate(0.75);
+
+            aspect-ratio: 1 / 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem;
+            background: var(--t-bg);
+            border: 2px solid var(--t-bd);
+            box-shadow: inset 0 0 0 1px var(--t-inset), var(--t-glow);
+            user-select: none;
+            transition: border-color 0.15s;
+        }
+        @media (min-width: 640px) { .ws-tile { padding: 0.375rem; } }
+        button.ws-tile:hover:not([data-full="true"]) { border-color: var(--t-bd-hover); }
+        button.ws-tile[data-full="true"] { cursor: not-allowed; opacity: 0.85; }
+        div.ws-tile { cursor: default; }
+
+        .ws-tile::before {
+            content: "";
+            position: absolute;
+            inset: auto var(--t-bar-inset) var(--t-bar-inset) var(--t-bar-inset);
+            height: var(--t-bar-h);
+            background: var(--t-bar);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ws-tile[data-brackets="true"]::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            pointer-events: none;
+            z-index: 15;
+            background-repeat: no-repeat;
+            background-image:
+                    linear-gradient(var(--bracket-top), var(--bracket-top)),
+                    linear-gradient(var(--bracket-top), var(--bracket-top)),
+                    linear-gradient(var(--bracket-top), var(--bracket-top)),
+                    linear-gradient(var(--bracket-top), var(--bracket-top)),
+                    linear-gradient(var(--bracket-side), var(--bracket-side)),
+                    linear-gradient(var(--bracket-side), var(--bracket-side)),
+                    linear-gradient(var(--bracket-side), var(--bracket-side)),
+                    linear-gradient(var(--bracket-side), var(--bracket-side));
+            background-size: 10px 4px, 10px 4px, 10px 4px, 10px 4px, 4px 6px, 4px 6px, 4px 6px, 4px 6px;
+            background-position:
+                    top left, top right, bottom left, bottom right,
+                    top 4px left, top 4px right, bottom 4px left, bottom 4px right;
+        }
+
+        .ws-tile[data-state="auto"] {
+            --t-bg: #191916; --t-bd: #fbbf24; --t-bd-hover: #fcd34d; --t-inset: #78350f;
+            --t-glow: 0 0 10px rgba(251, 191, 36, 0.25);
+            --t-bar: linear-gradient(to bottom, #33220a 0 25%, #66410e 25% 50%, #d97706 50% 75%, #fde047 75% 100%);
+            --t-tag-bg: #fbbf24; --t-filter: brightness(1.1);
+        }
+        .ws-tile[data-state="grant"] {
+            --t-bg: #0c1d1c; --t-bd: #2dd4bf; --t-bd-hover: #5eead4; --t-inset: #115e59;
+            --t-glow: 0 0 12px rgba(45, 212, 191, 0.3);
+            --t-bar: linear-gradient(to bottom, #042f2e 0 33.3%, #0f766e 33.3% 66.6%, #2dd4bf 66.6% 100%);
+            --t-tag-bg: #5eead4; --t-filter: brightness(1.1);
+        }
+        .ws-tile[data-state="selected"] {
+            --t-bg: #161a16; --t-bd: #a3e635; --t-bd-hover: #bef264; --t-inset: #166534;
+            --t-glow: 0 0 10px rgba(132, 204, 22, 0.25);
+            --t-bar: linear-gradient(to bottom, #143322 0 25%, #1b5231 25% 50%, #52a832 50% 75%, #bef264 75% 100%);
+            --t-tag-bg: #a3e635; --t-filter: brightness(1.1);
+        }
+        .ws-tile[data-state="stage"] {
+            --t-bg: #101820; --t-bd: #38bdf8; --t-bd-hover: #7dd3fc; --t-inset: #334155;
+            --t-glow: 0 0 10px rgba(56, 189, 248, 0.25);
+            --t-bar: linear-gradient(to bottom, #0c2d48 0 33.3%, #0284c7 33.3% 66.6%, #7dd3fc 66.6% 100%);
+            --t-bar-inset: 0.375rem; --t-bar-h: 38%;
+            --t-tag-bg: #7dd3fc; --t-filter: brightness(1.1);
+        }
+        .ws-tile[data-state="synergy"] {
+            --t-bg: #1e0c24; --t-bd: #e879f9; --t-bd-hover: #f0abfc; --t-inset: #86198f;
+            --t-glow: 0 0 14px rgba(232, 121, 249, 0.45);
+            --t-bar: linear-gradient(to bottom, #3b0764 0 33.3%, #86198f 33.3% 66.6%, #e879f9 66.6% 100%);
+            --t-tag-bg: #e879f9; --t-filter: brightness(1.1) drop-shadow(0 0 4px rgba(232, 121, 249, 0.75));
+            z-index: 10;
+        }
+        .ws-tile[data-state="synergy"]::before { animation: ws-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        .ws-tile[data-state="job-done"],
+        .ws-tile[data-state="auto-reliquary"] {
+            --t-bg: #121f0e; --t-bd: #fde047; --t-inset: #15803d;
+            --t-glow: 0 0 16px rgba(250, 204, 21, 0.5);
+            --t-bar: linear-gradient(to bottom, rgba(5, 46, 22, 0.8) 0 25%, rgba(21, 128, 61, 0.8) 25% 50%, rgba(163, 230, 53, 0.9) 50% 75%, #fef08a 75% 100%);
+            --t-bar-h: 48%; --t-tag-bg: #fde047;
+            --t-filter: brightness(1.15) drop-shadow(0 0 6px rgba(250, 204, 21, 0.95));
+            z-index: 10;
+        }
+        .ws-tile[data-state="upgrade-me"] {
+            --t-bg: #231206; --t-bd: #fb923c; --t-inset: #9a3412;
+            --t-glow: 0 0 14px rgba(251, 146, 60, 0.45);
+            --t-bar: linear-gradient(to bottom, rgba(67, 20, 7, 0.8) 0 33.3%, rgba(194, 65, 12, 0.8) 33.3% 66.6%, rgba(251, 191, 36, 0.9) 66.6% 100%);
+            --t-tag-bg: #fb923c; --t-filter: brightness(1.05) drop-shadow(0 0 4px rgba(251, 146, 60, 0.85));
+            animation: ws-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            z-index: 10;
+        }
+        .ws-tile[data-state="disabled"] {
+            --t-bg: #0e0c0d; --t-bd: rgba(39, 39, 42, 0.9); --t-inset: #18181b;
+            --t-filter: brightness(0.35) grayscale(1);
+            opacity: 0.65;
+        }
+        .ws-tile[data-evo-ready="true"]:not([data-state="job-done"]):not([data-state="auto-reliquary"]) {
+            --t-filter: brightness(1.15) drop-shadow(0 0 4px rgba(250, 204, 21, 0.9));
+        }
+
+        .ws-tile-sprite {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: var(--t-filter);
+            transition: filter 0.15s, transform 0.15s;
+        }
+        .ws-tile[data-state="sealed"]:hover .ws-tile-sprite { filter: brightness(0.75); }
+        .ws-tile[data-state="job-done"] .ws-tile-sprite,
+        .ws-tile[data-state="auto-reliquary"] .ws-tile-sprite { transform: scale(1.05); }
+
+        /* Single 10x10 WebP Sprite Atlas (240x240px, 24x24px cells) */
+        .ws-sprite-icon {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            background-image: url(data:image/webp;base64,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);
+            background-size: 1000% 1000%;
+            background-position: calc(var(--col, 0) * 100% / 9) calc(var(--row, 0) * 100% / 9);
+            background-repeat: no-repeat;
+            image-rendering: pixelated;
+            pointer-events: none;
+        }
+        @media (min-width: 640px) { .ws-tile .ws-sprite-icon { width: 2.5rem; height: 2.5rem; } }
+
+        .ws-tile-tag {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            z-index: 20;
+            padding: 1px 4px;
+            background: var(--t-tag-bg);
+            color: var(--zinc-950);
+            border: 1px solid var(--zinc-950);
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ws-tile-tag[data-pos="top"] { bottom: auto; top: -6px; font-size: 7px; z-index: 30; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8); }
+        .ws-tile-tag[data-shape="square"] { width: 0.95rem; height: 0.95rem; padding: 0; font-size: 10px; }
+
+        .ws-wax-seal {
+            position: absolute;
+            top: -0.375rem;
+            left: -0.375rem;
+            z-index: 20;
+            width: 1.5rem;
+            height: 1.5rem;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.85));
+            transition: transform 0.15s;
+        }
+        @media (min-width: 640px) { .ws-wax-seal { width: 1.75rem; height: 1.75rem; } }
+        .ws-tile:hover .ws-wax-seal { transform: scale(0.95); }
+
+        .ws-evo-lock {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            z-index: 20;
+            width: 0.875rem;
+            height: 0.875rem;
+            background: rgba(24, 24, 27, 0.95);
+            border: 1px solid var(--zinc-700);
+            color: var(--zinc-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==========================================================================
+           7. MODAL
+           ========================================================================== */
+        .ws-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .ws-modal {
+            width: 100%;
+            max-width: 32rem;
+            background: var(--bg-panel);
+            border: 1px solid var(--bd-panel);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @keyframes ws-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+    </style>
+</head>
+<body>
+<div id="app" class="ws-app" data-universe="40k"></div>
+
+<script>
+    (() => {
+        "use strict";
+
+        /* ==========================================================================
+           0. CONFIGURATION
+           ========================================================================== */
+        const CONFIG = {
+            SLOTS: {
+                MAX_WEAPONS: 6,
+                MAX_PASSIVES: 6
+            },
+            GRID: {
+                COLUMNS: 8
+            },
+            UNIVERSES: ["40k", "aos"],
+            TILE_STATES: {
+                AUTO: "auto",
+                GRANT: "grant",
+                SELECTED: "selected",
+                STAGE: "stage",
+                SYNERGY: "synergy",
+                SEALED: "sealed",
+                JOB_DONE: "job-done",
+                UPGRADE_ME: "upgrade-me",
+                DISABLED: "disabled",
+                AUTO_RELIQUARY: "auto-reliquary"
+            },
+            FLAG_TYPES: {
+                GRANT: "grant",
+                NO_TILE: "noTile",
+                ALT: "alt",
+                ARCHEOTECH: "archeotech",
+                RELIQUARY: "reliquary",
+                EXOTIC: "exotic"
+            },
+            SPRITE: {
+                ATLAS_SIZE: 10,
+                CELL_SIZE: 24
+            },
+            URLS: {
+                DEFAULT_SITES: "https://sites.google.com/view/warhammersurvivorsplanner/full-page-embed"
+            },
+            LEGACY_ALIASES: {
+                "Lieutenant Titus": "Lieutenant Demetrian Titus",
+                "Lord-Commander Carthalos": "Lord-Commander Bastian Carthalos"
+            }
+        };
+
+        /* ==========================================================================
+           1. ATLAS COORDINATE INDEX & SVG ICONS
+           ========================================================================== */
+        const ATLAS_NAMES = [
+            "Chainsword", "Eviscerator Chainsword", "Lasgun", "Meltagun", "Boltgun", "Heavy Bolter", "Shield of Faith", "Emperor's Wrath", "Flamer", "Heavy Flamer",
+            "Combat Shotgun", "Executioner shotgun", "Whirlwind Battery", "Orbital Bombardment", "Frag Grenade", "Ripper Pistol", "Mechanical Bite", "Remote Detonation", "Power Klaw", "Bale Eye",
+            "Ardent Blade", "Weapon of the Matriarch", "Power Fist", "Gauntlets Of Ultramar", "Storm Bolter", "Assault Cannon", "Battle Cannon", "Side Sponsons", "Spear of the Faithful", "Thorn of the White Rose",
+            "Crozius Arcanum", "Benediction of Fury", "Smite", "Fury of the Ancients", "Codex Astartes", "Fidelis", "Purgator Mirabilis", "Storm Eagle Rocket", "Deathstrike Missile", "Tempest Axes",
+            "Whirlwind Axes", "Brace of Pistols", "Duelling Pistols", "Nebulous Sea-Fog", "Aquatic Illusions", "Fusil-Cannon", "Long-Fusil", "Boltstorm Pistol", "Typhoon Crossbow", "Grandblade",
+            "Celestial Greatsword", "Cyclone Sword", "Voice of the God-King", "Flintlock Pistols", "Aqshian Firestakes", "Fyrestorm Greataxe", "Zangrom-Thaz", "Stormcharged Warhammer", "Uskavar the Sunderer", "Ghal Maraz",
+            "Brazier Staff", "Master of Runes", "Twin-Tailed Cat", "Enchanted Glove", "Blade of the High Heavens", "Thengavar", "Poisoned Throwing Knives", "Bladed Vortex", "Rope & Grapnel", "Ghost of Rhea",
+            "Mystical Ward", "Warding Lantern", "Exotic Weaponry", "Nuln Oil", "Mordant Earth", "D6 Dice", "Sustained Fire Dice", "Da Lucky Stikk", "Kragg Blackhammer's Master Rune", "Null Pendant",
+            "White Dwarf", "Gauntlet", "Glue", "Bandolier", "Liquid Green Stuff", "Bugman's Tankard", "Tape Measure", "Hourglass", "Dice Cube", "Lightning Bolt",
+            "Sabaton", "Magnet", "Scatter Die", "Golden Demon", "Chaos Sigil", "Figure Case", "Ardcoat", "Tactical Rock"
+        ];
+        const ATLAS_INDEX = new Map(ATLAS_NAMES.map((n, i) => [n, i]));
+        ATLAS_INDEX.set("Archeotech", ATLAS_INDEX.get("Codex Astartes"));
+        ATLAS_INDEX.set("Reliquary", ATLAS_INDEX.get("Codex Astartes"));
+        ATLAS_INDEX.set("Artefacts of Power", ATLAS_INDEX.get("Exotic Weaponry"));
+
+        const ICONS = {
+            award: `<path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/>`,
+            check: `<path d="M20 6 9 17l-5-5"/>`,
+            compass: `<path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/><circle cx="12" cy="12" r="10"/>`,
+            copy: `<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>`,
+            crosshair: `<circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/>`,
+            flame: `<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>`,
+            hexagon: `<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>`,
+            key: `<path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/>`,
+            lock: `<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
+            reset: `<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>`,
+            search: `<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>`,
+            share: `<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>`,
+            shield: `<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>`,
+            sparkles: `<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/>`,
+            upload: `<path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>`,
+            wand: `<path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.21 1.21 0 0 0 1.72 0L21.64 5.36a1.21 1.21 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/>`,
+            x: `<path d="M18 6 6 18"/><path d="m6 6 12 12"/>`
+        };
+
+        const WAX_SEAL_SVG = `<svg viewBox="0 0 16 16" shape-rendering="crispEdges" class="ws-wax-seal" aria-hidden="true"><path fill="#2a0303" d="M5 0h5v1h2v1h1v1h1v2h1v5h-1v2h-1v1h-1v1h-2v1H5v-1H3v-1H2v-1H1v-2H0V5h1V3h1V2h1V1h2V0z"/><path fill="#991b1b" d="M5 1h5v1h2v1h1v2h1v5h-1v2h-1v1h-2v1H5v-1H3v-1H2v-2H1V5h1V3h1V2h2V1z"/><path fill="#ef4444" d="M5 1h4v1H5V1zM3 2h2v1H3V2zM2 3h1v2H2V3zM1 5h1v4H1V5z"/><path fill="#b91c1c" d="M5 2h5v1h2v2h1v5h-1v1h-1v-1h1V5h-1V3H5V2z"/><rect x="11" y="1" width="1" height="1" fill="#dc2626"/><rect x="14" y="6" width="1" height="2" fill="#dc2626"/><rect x="6" y="14" width="2" height="1" fill="#dc2626"/><rect x="1" y="9" width="1" height="1" fill="#7f1d1d"/><path fill="#450a0a" d="M4 4h2v1h1v1h2V5h1V4h2v2h-1v1h-1v2h1v1h1v2h-2v-1H9v-1H7v1H6v1H4v-2h1V9h1V7H5V6H4V4z"/><path fill="#650d0d" d="M5 5h1v1h1v1h2V6h1V5h1v1h-1v1H9v2h1v1h1v1h-1v-1H9V9H7v1H6v1H5v-1h1V9h1V7H6V6H5V5z"/></svg>`;
+
+        const svg = (name, size = 14, sw = 2) =>
+            `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0">${ICONS[name] || ""}</svg>`;
+
+        const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+        const spriteHtml = (name) => {
+            const idx = ATLAS_INDEX.get(name);
+            if (idx !== undefined) {
+                return `<span role="img" aria-label="${esc(name)}" class="ws-sprite-icon" style="--col:${idx % CONFIG.SPRITE.ATLAS_SIZE};--row:${(idx / CONFIG.SPRITE.ATLAS_SIZE) | 0}"></span>`;
+            }
+            const ini = name.split(/[\s&-]+/).filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
+            return `<span class="ws-mono" style="font-size:11px;font-weight:900">${esc(ini)}</span>`;
+        };
+
+        /* ==========================================================================
+           2. DATA FACTORIES
+           ========================================================================== */
+
+        /**
+         * Creates a character data entry.
+         * @param {object} opts
+         * @param {string} opts.name - Character display name
+         * @param {string[]} opts.weapons - Starting weapon names (empty for grant-type chars)
+         * @param {string} opts.passive - Character trait/description
+         * @param {string|null} [opts.flag] - Special flag: "alt", "archeotech", "reliquary", or "exotic"
+         * @returns {object} Character entry
+         */
+        const createCharacter = ({name, weapons, passive, flag}) => ({name, weapons, passive, flag});
+
+        /**
+         * Creates a weapon data entry.
+         * @param {object} opts
+         * @param {string} opts.name - Weapon name
+         * @param {string|null} opts.passive - Required passive for evolution (null for evolved weapons)
+         * @param {string|null} opts.evolution - Evolved weapon name (null for final forms)
+         * @param {string|string[]|null} [opts.option] - Special: "noTile", "grant", or [evoName, evoPassive] for 2nd evolution
+         * @returns {object} Weapon entry
+         */
+        const createWeapon = ({name, passive, evolution, option}) => ({name, passive, evolution, option});
+
+        /**
+         * Creates a stage/map data entry.
+         * @param {object} opts
+         * @param {string} opts.name - Stage name
+         * @param {string[]} opts.weapons - Free weapons granted by this stage
+         * @param {string[]} opts.passives - Free passives granted by this stage
+         * @param {string} opts.note - Stage description
+         * @returns {object} Stage entry
+         */
+        const createStage = ({name, weapons, passives, note}) => ({name, weapons, passives, note});
+
+        /* ==========================================================================
+           3. DEDUPLICATED DATA & HYDRATION
+           ========================================================================== */
+        const SHARED_PASSIVES = [
+            "White Dwarf", "Gauntlet", "Glue", "Bandolier", "Liquid Green Stuff", "Bugman's Tankard",
+            "Tape Measure", "Hourglass", "Dice Cube", "Lightning Bolt", "Sabaton", "Magnet",
+            "Scatter Die", "Golden Demon", "Chaos Sigil", "Figure Case", "Ardcoat", "Tactical Rock"
+        ];
+
+        const SHARED_WEAPONS = [
+            ["Nuln Oil", "Hourglass", "Mordant Earth"],
+            ["D6 Dice", "Scatter Die", "Sustained Fire Dice"]
+        ];
+
+        const RAW_GAME_DATA = {
+            "40k": {
+                label: "Warhammer 40,000",
+                subtitle: "Munitorum Cogitator • 6 Weapon & 6 Passive Slots + Stage & Relic Grants",
+                characters: [
+                    createCharacter({name: "Malum Caedo", weapons: ["Chainsword"], passive: "Gains +3% Strength for every weapon and passive equipped. +1 Save reduces incoming damage."}),
+                    createCharacter({name: "Trooper Bartosz Kozlowski", weapons: ["Lasgun"], passive: "Gains +1 Redeployment every 15 levels (max 2). Gains +5% Veterancy for each Follower."}),
+                    createCharacter({name: "Brother Luca Amasius", weapons: ["Boltgun"], passive: "Weapon cooldowns reduced by 20%."}),
+                    createCharacter({name: "Sister Superior Amalia Novena", weapons: ["Shield of Faith"], passive: "Gains +10% Range every 10 levels (max +30%). Gains +10% Chance when below 50% health, increasing the likelihood of the Burning Status Effect being applied."}),
+                    createCharacter({name: "Canoness Aurora Veritas", weapons: ["Flamer"], passive: "Gains +10% Sustain every 10 levels (max +30%) increasing the duration of weapons and status effects."}),
+                    createCharacter({name: "Max Mahon", weapons: ["Combat Shotgun"], passive: "Gains +1% Strength every level. Gains a temporary Warded Status Effect on level up."}),
+                    createCharacter({name: "Max Mahon & K9 Mastiff", weapons: ["Combat Shotgun", "Mechanical Bite"], passive: "Gains +1% Strength every level. Gains a temporary Warded Status Effect on level up. Starts with an additional Mechanical Bite.", flag: CONFIG.FLAG_TYPES.ALT}),
+                    createCharacter({name: "Captain Tor Garadon", weapons: ["Whirlwind Battery"], passive: "Temporary Attacks bonus on levels including the number 3."}),
+                    createCharacter({name: "The Legend of Catachan", weapons: ["Frag Grenade"], passive: "Applies the Battleshocked status effect to nearby enemies at critically low Wounds. Finds more explosives."}),
+                    createCharacter({name: "K9 Mastiff", weapons: ["Mechanical Bite"], passive: "Retaliates when taking damage. Temporarily gains the Frenzied status effect at critically low Wounds."}),
+                    createCharacter({name: "K9 Mastiff & Max Mahon", weapons: ["Mechanical Bite", "Combat Shotgun"], passive: "Retaliates when taking damage. Temporarily gains the Frenzied status effect at critically low Wounds. Starts with an additional Combat Shotgun.", flag: CONFIG.FLAG_TYPES.ALT}),
+                    createCharacter({name: "Commissar Sebastian Yarrick", weapons: ["Power Klaw"], passive: "Consuming Redeployment increases Strength, Toughness and Corruption."}),
+                    createCharacter({name: "Chapter Master Marneus Calgar", weapons: ["Power Fist"], passive: "Range and Strength benefit from the difference between Chance and Corruption."}),
+                    createCharacter({name: "Saint Celestine", weapons: ["Ardent Blade"], passive: "Grows in Chance and Strength every level. Redeploys stronger."}),
+                    createCharacter({name: "Sergeant Furan", weapons: ["Storm Bolter"], passive: "Gains +1% Skill per level if above 50% Wounds. Gains +1% Strength per level if below 50% Wounds."}),
+                    createCharacter({name: "Knight-Commander Pask", weapons: ["Battle Cannon"], passive: "Gains +0.1 Toughness every level. Crushes enemies while moving."}),
+                    createCharacter({name: "Celestian Sacresant Aveline Aboyé", weapons: ["Spear of the Faithful"], passive: "Gains +5% Range and Move on defeating a boss. Increased damage against Daemons."}),
+                    createCharacter({name: "Chaplain Fo'Baran", weapons: ["Crozius Arcanum"], passive: "Gains +5% Range and +0.05 Toughness for each Follower. Finds more Hellfire Ammo."}),
+                    createCharacter({name: "Black Templars Castellan", weapons: ["Boltgun"], passive: "Gains +10% Skill for each follower."}),
+                    createCharacter({name: "Chief Librarian Mephiston", weapons: ["Smite"], passive: "Grows stronger every level. Triggers the Red Thirst at significant numbers of defeated enemies."}),
+                    createCharacter({name: "Lieutenant Demetrian Titus", weapons: ["Chainsword"], passive: "Corruption scales with the number of weapons. Receives an Archeotech at level 13."}),
+                    createCharacter({name: "Technoarcheologist Daedalosus", weapons: [], passive: "Always gets 4 level up choices. Enemies may drop coins instead of gems. Starts with Archeotech (free slot + Reliquary upgrade).", flag: CONFIG.FLAG_TYPES.ARCHEOTECH}),
+                    createCharacter({name: "Balphamus Vaulk", weapons: [], passive: "Gains +10% Tithe for each weapon and passive equipped. Harnesses the Motive Force. Starts with Reliquary (free evolved weapon bypassing prerequisites).", flag: CONFIG.FLAG_TYPES.RELIQUARY}),
+                    createCharacter({name: "High Abbess Morvenn Vahl", weapons: ["Fidelis"], passive: "All stats improve for every Adepta Sororitas follower."})
+                ],
+                stages: [
+                    ["Imperial Bastion", ["Nuln Oil"], ["Hourglass", "Magnet"], "Free Nuln Oil + Hourglass on ground (instant Mordant Earth evolution)."],
+                    ["Gallowdark", ["D6 Dice"], ["Dice Cube", "Glue", "Sabaton", "Scatter Die"], "Free D6 Dice + Scatter Die on ground (instant Sustained Fire Dice)."],
+                    ["Ork Stronghold", ["Nuln Oil"], ["Bugman's Tankard", "Hourglass", "Lightning Bolt", "Liquid Green Stuff"], "Free Nuln Oil + Hourglass. Finding Makari with Auspex unlocks Da Lucky Stikk."],
+                    ["Imperial Shipyard", [], ["Chaos Sigil", "Liquid Green Stuff", "Sabaton", "Tactical Rock"], "4 free ground passives including Tactical Rock for Saint Celestine."],
+                    ["Death World Invasion", ["Storm Eagle Rocket"], ["Codex Astartes", "Figure Case", "White Dwarf"], "Free Storm Eagle Rocket + White Dwarf (Deathstrike Missile) & Codex Astartes."],
+                    ["Desert Wasteland", ["Storm Eagle Rocket"], [...SHARED_PASSIVES].sort(), "All 18 standard passives spawn on the ground plus Storm Eagle Rocket (50% × Chance)."],
+                    ["Hobby Table (40K)", ["D6 Dice"], ["Ardcoat", "Dice Cube", "Golden Demon", "Scatter Die", "Tape Measure"], "Free D6 Dice + Scatter Die & Golden Demon on the hobby table."],
+                    ["Perils of the Warp", [], [], "30-minute survival gauntlet vs. Mortarion — no fixed ground weapons or passives."]
+                ],
+                weapons: [
+                    ["Chainsword", "Tape Measure", "Eviscerator Chainsword"],
+                    ["Lasgun", "Gauntlet", "Meltagun"],
+                    ["Boltgun", "Dice Cube", "Heavy Bolter"],
+                    ["Shield of Faith", "Bugman's Tankard", "Emperor's Wrath"],
+                    ["Flamer", "Glue", "Heavy Flamer"],
+                    ["Combat Shotgun", "Magnet", "Executioner shotgun"],
+                    ["Whirlwind Battery", "Liquid Green Stuff", "Orbital Bombardment"],
+                    ["Frag Grenade", "Bandolier", "Ripper Pistol"],
+                    ["Mechanical Bite", "Sabaton", "Remote Detonation"],
+                    ["Power Klaw", "Da Lucky Stikk", "Bale Eye"],
+                    ["Ardent Blade", "Tactical Rock", "Weapon of the Matriarch"],
+                    ["Power Fist", "Codex Astartes", "Gauntlets Of Ultramar"],
+                    ["Storm Bolter", "Lightning Bolt", "Assault Cannon"],
+                    ["Battle Cannon", "Figure Case", "Side Sponsons"],
+                    ["Spear of the Faithful", "Chaos Sigil", "Thorn of the White Rose"],
+                    ["Crozius Arcanum", "Lightning Bolt", "Benediction of Fury"],
+                    ["Smite", "Ardcoat", "Fury of the Ancients"],
+                    ["Archeotech", null, "Reliquary", "grant"],
+                    ["Fidelis", "Golden Demon", "Purgator Mirabilis"],
+                    ["Storm Eagle Rocket", "White Dwarf", "Deathstrike Missile"],
+                    ...SHARED_WEAPONS
+                ],
+                passives: ["Da Lucky Stikk", "Codex Astartes", ...SHARED_PASSIVES]
+            },
+            "aos": {
+                label: "Age of Sigmar",
+                subtitle: "Azyrite Celestial Vault • 6 Weapon & 6 Passive Slots + Stage & Exotic Grants",
+                characters: [
+                    ["Neave Blacktalon", ["Tempest Axes"], "Moves 20% faster. Gains +10% Range every 5 levels (max 30%)."],
+                    ["Armand Callis", ["Brace of Pistols"], "Gains +5% Reload every 10 levels (max +15%). Has +2 Attacks with exactly one follower."],
+                    ["Armand Callis & Hanniver Toll", ["Brace of Pistols", "Flintlock Pistols"], "Gains +5% Reload every 10 levels (max +15%). Has +2 Attacks with exactly one follower. Starts with an additional Flintlock Pistols.", "alt"],
+                    ["Lorai, Child of the Abyss", ["Nebulous Sea-Fog"], "Gains +5% Chance every 5 levels (max +30%). Finds more endless spells."],
+                    ["Juntar Bernskyn", ["Fusil-Cannon"], "Gains +1 Save and +10% Reload when stationary."],
+                    ["Shakana Goldenblade", ["Boltstorm Pistol"], "Gains +5% Skill every 10 levels (max 30%). Gains +5% Veterancy for every Weapon equipped."],
+                    ["Sharynn Azurwrath", ["Grandblade"], "Gains a bonus to Strength and Reload at critically low Wounds."],
+                    ["Hendrick, The Silver Wolf", ["Cyclone Sword"], "Gains +5% Aura every 5 levels (max +30%). Gains a temporary Warded status effect whenever a new follower joins."],
+                    ["Hanniver Toll", ["Flintlock Pistols"], "Gains +5% Sustain every 5 levels (max +30%). +10% Damage against bosses."],
+                    ["Hanniver Toll & Armand Callis", ["Flintlock Pistols", "Brace of Pistols"], "Gains +5% Sustain every 5 levels (max +30%). +10% Damage against bosses. Starts with an additional Brace of Pistols.", "alt"],
+                    ["Gotrek Gurnisson", ["Fyrestorm Greataxe"], "Gains +1 Redeployment at certain kill thresholds. Redeploys with the Berserk Status effect."],
+                    ["Gotrek Gurnisson & Maleneth Witchblade", ["Fyrestorm Greataxe", "Poisoned Throwing Knives"], "Gains +1 Redeployment at certain kill thresholds. Redeploys with the Berserk Status effect. Starts with an additional Poisoned Throwing Knives.", "alt"],
+                    ["Rostus Oxenhammer", ["Stormcharged Warhammer"], "Gains +10 Wounds for every 1000 enemies defeated."],
+                    ["Ulgromthier", ["Brazier Staff"], "Gains a random stat buff for every 100 coins collected. Finds more Ur-Gold runes."],
+                    ["Mistress Verentia", ["Twin-Tailed Cat"], "Gains +5% Move, Wounds and Skill every time she levels up her starting weapon."],
+                    ["Major Docheval", ["Long-Fusil"], "Strength scales with Save."],
+                    ["Lord-Commander Bastian Carthalos", ["Uskavar the Sunderer"], "Gains +0.1 Toughness for every 1000 enemies defeated."],
+                    ["Yndrasta, the Celestial Spear", ["Blade of the High Heavens"], "Gains +0.5% Sustain and Chance every level. Deals 50% extra damage to bosses."],
+                    ["Maleneth Witchblade", ["Poisoned Throwing Knives"], "Gains +5% Move, Strength and Sustain for every boss defeated."],
+                    ["Maleneth Witchblade & Gotrek Gurnisson", ["Poisoned Throwing Knives", "Fyrestorm Greataxe"], "Gains +5% Move, Strength and Sustain for every boss defeated. Starts with an additional Fyrestorm Greataxe.", "alt"],
+                    ["Lyssa Revenya", ["Rope & Grapnel"], "Gains a bonus to Chance and Move when lots of enemies are in sight."],
+                    ["Valius, the Keeper Aqshian", ["Mystical Ward"], "Gains +5% Strength, Reload, Range and Move every 10 Levels. Corruption scales with all stats."],
+                    ["Lord-Magnate Brokk Grungsson", [], "Ignores terrain. Gains +2% Tithe every time a Reroll, Skip or Banish is used. Starts with Exotic Weaponry (free weapon of choice, 0 slots used).", "exotic"],
+                    ["Drekki Flynt", ["Artefacts of Power"], "Chance of collectathon increases with enemies killed."],
+                    ["Celestant-Prime, Hammer of Sigmar", ["Ghal Maraz"], "All stats increase for every 1000 enemies defeated."]
+                ],
+                stages: [
+                    ["The Great Parch", ["Nuln Oil"], ["Ardcoat", "Bandolier", "Bugman's Tankard", "Hourglass", "Sabaton", "Tape Measure"], "Free Nuln Oil + Hourglass & 5 other ground passives."],
+                    ["Skrappa Spill", ["D6 Dice"], ["Dice Cube", "Gauntlet", "Kragg Blackhammer's Master Rune", "Scatter Die", "Tape Measure"], "Free D6 Dice + Scatter Die & Kragg Blackhammer's Master Rune for Gotrek."],
+                    ["Bloodwind Spoil", ["Nuln Oil"], ["Bugman's Tankard", "Chaos Sigil", "Hourglass", "Tactical Rock"], "Free Nuln Oil + Hourglass, Tactical Rock & Chaos Sigil."],
+                    ["Under-Empire", [], ["Lightning Bolt", "Liquid Green Stuff", "Sabaton"], "3 free ground passives in the Skaven tunnels."],
+                    ["The Twin-Tailed City", [], ["Chaos Sigil", "Figure Case", "Glue", "Golden Demon", "Scatter Die"], "5 free ground passives across Sigmar's metropolis."],
+                    ["Gnarlwood", [], [...SHARED_PASSIVES].sort(), "All 18 standard passives spawn on the ground across the Gnarlwood."],
+                    ["Hobby Table (AoS)", ["D6 Dice"], ["Glue", "Golden Demon", "Scatter Die", "White Dwarf"], "Free D6 Dice + Scatter Die & Golden Demon on the AoS hobby table."],
+                    ["Necropolis", [], ["Null Pendant"], "Final showdown vs. Nagash — Null Pendant spawns on the ground (with Auspex)."]
+                ],
+                weapons: [
+                    ["Tempest Axes", "Sabaton", "Whirlwind Axes"],
+                    ["Brace of Pistols", "Bandolier", "Duelling Pistols"],
+                    ["Nebulous Sea-Fog", "Bugman's Tankard", "Aquatic Illusions"],
+                    ["Fusil-Cannon", null, "Long-Fusil"],
+                    ["Boltstorm Pistol", "Dice Cube", "Typhoon Crossbow"],
+                    ["Grandblade", "Tape Measure", "Celestial Greatsword"],
+                    ["Cyclone Sword", "Magnet", "Voice of the God-King"],
+                    ["Flintlock Pistols", "Ardcoat", "Aqshian Firestakes"],
+                    ["Fyrestorm Greataxe", "Kragg Blackhammer's Master Rune", "Zangrom-Thaz"],
+                    ["Stormcharged Warhammer", "Tactical Rock", "Uskavar the Sunderer", ["Ghal Maraz", "Null Pendant"]],
+                    ["Brazier Staff", "Liquid Green Stuff", "Master of Runes"],
+                    ["Twin-Tailed Cat", "Golden Demon", "Enchanted Glove"],
+                    ["Blade of the High Heavens", "Figure Case", "Thengavar", "noTile"],
+                    ["Poisoned Throwing Knives", "Gauntlet", "Bladed Vortex"],
+                    ["Rope & Grapnel", "White Dwarf", "Ghost of Rhea", "noTile"],
+                    ["Mystical Ward", "Glue", "Warding Lantern"],
+                    ["Exotic Weaponry", null, "Artefacts of Power", "grant"],
+                    ...SHARED_WEAPONS
+                ],
+                passives: ["Kragg Blackhammer's Master Rune", "Null Pendant", ...SHARED_PASSIVES]
+            }
+        };
+
+        /**
+         * Hydrates raw game data tuples into structured DATA objects.
+         * Transforms tuple-based entries into objects with computed properties.
+         * @returns {object} Hydrated DATA object keyed by universe
+         */
+        function hydrateGameData() {
+            const data = {};
+            for (const [uKey, raw] of Object.entries(RAW_GAME_DATA)) {
+                const characters = raw.characters.map(({name, weapons, passive, flag}) => ({
+                    name,
+                    weapons,
+                    passive,
+                    isAlt: flag === CONFIG.FLAG_TYPES.ALT,
+                    grantType: flag && flag !== CONFIG.FLAG_TYPES.ALT ? flag : null
+                }));
+                const stages = raw.stages.map(({name, weapons, passives, note}) => ({ name, weapons, passives, note }));
+                const weapons = raw.weapons.map(({name, passive, evolution, option}) => ({
+                    name,
+                    passive,
+                    evolution,
+                    hasEvoTile: option !== CONFIG.FLAG_TYPES.NO_TILE && option !== CONFIG.FLAG_TYPES.GRANT,
+                    isSlotFreeGrant: option === CONFIG.FLAG_TYPES.GRANT,
+                    secondEvolution: Array.isArray(option) ? { name: option[0], passive: option[1] } : null
+                }));
+
+                const weaponLookup = new Map();
+                const allEvos = [];
+                for (const w of weapons) {
+                    weaponLookup.set(w.name, w);
+                    if (w.evolution && w.evolution !== "Reliquary" && w.evolution !== "Artefacts of Power") {
+                        if (!allEvos.includes(w.evolution)) allEvos.push(w.evolution);
+                        weaponLookup.set(w.evolution, {
+                            name: w.evolution,
+                            passive: w.secondEvolution ? w.secondEvolution.passive : null,
+                            evolution: w.secondEvolution ? w.secondEvolution.name : null,
+                            isEvolvedStart: true
+                        });
+                    }
+                    if (w.secondEvolution) {
+                        if (!allEvos.includes(w.secondEvolution.name)) allEvos.push(w.secondEvolution.name);
+                        weaponLookup.set(w.secondEvolution.name, {
+                            name: w.secondEvolution.name,
+                            passive: null,
+                            evolution: null,
+                            isEvolvedStart: true
+                        });
+                    }
+                }
+
+                data[uKey] = {
+                    label: raw.label,
+                    subtitle: raw.subtitle,
+                    characters,
+                    charMap: new Map(characters.map((c) => [c.name, c])),
+                    stages,
+                    stageMap: new Map(stages.map((s) => [s.name, s])),
+                    weapons,
+                    weaponLookup,
+                    allEvos,
+                    passives: raw.passives,
+                    passiveSet: new Set(raw.passives)
+                };
+            }
+            return data;
+        }
+
+        const DATA = hydrateGameData();
+
+        /* ==========================================================================
+           3. STATE & URL SERIALIZATION
+           ========================================================================== */
+
+        const isGoogleSites = (() => {
+            const h = location.hostname || "";
+            return h.includes("googleusercontent.com") || h.includes("atari-embeds") || window.self !== window.top;
+        })();
+
+        const resolveInitialUrl = () => {
+            try {
+                const saved = localStorage.getItem("ws_planner_site_url");
+                if (saved && saved.startsWith("http")) return saved;
+            } catch {}
+            return isGoogleSites ? CONFIG.URLS.DEFAULT_SITES : `${location.origin}${location.pathname}`;
+        };
+
+        const emptyBuild = () => ({
+            character: null,
+            map: null,
+            weapons: [],
+            passives: [],
+            freeGrantUnsealed: false,
+            grantBaseWeapon: "",
+            reliquaryEvoWeapon: ""
+        });
+
+        function encodeBuildHash(universe, build) {
+            try {
+                const payload = {
+                    u: universe,
+                    c: build.character || "",
+                    m: build.map || "",
+                    w: build.weapons.map((w) => w.name),
+                    p: build.passives,
+                    fg: Boolean(build.freeGrantUnsealed),
+                    gw: build.grantBaseWeapon || "",
+                    rw: build.reliquaryEvoWeapon || ""
+                };
+                const bytes = new TextEncoder().encode(JSON.stringify(payload));
+                let bin = "";
+                bytes.forEach((b) => { bin += String.fromCharCode(b); });
+                return `build=${btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")}`;
+            } catch {
+                return "";
+            }
+        }
+
+        function decodeBuildInput(raw) {
+            try {
+                if (!raw || typeof raw !== "string") return null;
+                const trimmed = raw.trim();
+                const idx = trimmed.indexOf("#");
+                const frag = idx >= 0 ? trimmed.slice(idx + 1) : trimmed;
+                const m = frag.match(/(?:^|&)build=([A-Za-z0-9\-_]+)/);
+                if (!m) return null;
+
+                let b64 = m[1].replace(/-/g, "+").replace(/_/g, "/");
+                while (b64.length % 4) b64 += "=";
+                const bin = atob(b64);
+                const bytes = new Uint8Array(bin.length);
+                for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+                const parsed = JSON.parse(new TextDecoder().decode(bytes));
+
+                const universe = parsed.u === "aos" ? "aos" : "40k";
+                const uData = DATA[universe];
+                const charObj = uData.charMap.get(CONFIG.LEGACY_ALIASES[parsed.c] || parsed.c) || null;
+                const stageObj = uData.stageMap.get(parsed.m) || null;
+                const bonusW = new Set(stageObj ? stageObj.weapons : []);
+                const bonusP = new Set(stageObj ? stageObj.passives : []);
+
+                const weapons = [];
+                const addWeapon = (wName, checkStage) => {
+                    if (weapons.length >= CONFIG.SLOTS.MAX_WEAPONS || weapons.some((w) => w.name === wName)) return;
+                    if (checkStage && bonusW.has(wName)) return;
+                    const wObj = uData.weaponLookup.get(wName);
+                    if (wObj && !wObj.isSlotFreeGrant) weapons.push(wObj);
+                };
+                (charObj ? charObj.weapons : []).forEach((w) => addWeapon(w, false));
+                if (Array.isArray(parsed.w)) parsed.w.forEach((w) => addWeapon(w, true));
+
+                const passives = [];
+                if (Array.isArray(parsed.p)) {
+                    for (const pName of parsed.p) {
+                        if (passives.length < CONFIG.SLOTS.MAX_PASSIVES && !passives.includes(pName) && !bonusP.has(pName) && uData.passiveSet.has(pName)) {
+                            passives.push(pName);
+                        }
+                    }
+                }
+
+                const validBase = typeof parsed.gw === "string" && uData.weapons.some((w) => !w.isSlotFreeGrant && w.name === parsed.gw) ? parsed.gw : "";
+                const validEvo = typeof parsed.rw === "string" && uData.allEvos.includes(parsed.rw) ? parsed.rw : "";
+
+                return {
+                    universe,
+                    build: {
+                        character: charObj ? charObj.name : null,
+                        map: stageObj ? stageObj.name : null,
+                        weapons,
+                        passives,
+                        freeGrantUnsealed: Boolean(parsed.fg),
+                        grantBaseWeapon: validBase,
+                        reliquaryEvoWeapon: validEvo
+                    }
+                };
+            } catch {
+                return null;
+            }
+        }
+
+        const initDecoded = decodeBuildInput(location.hash);
+        const state = {
+            universe: initDecoded ? initDecoded.universe : "40k",
+            builds: {
+                "40k": initDecoded && initDecoded.universe === "40k" ? initDecoded.build : emptyBuild(),
+                "aos": initDecoded && initDecoded.universe === "aos" ? initDecoded.build : emptyBuild()
+            },
+            charQuery: initDecoded && initDecoded.build.character ? initDecoded.build.character : "",
+            charOpen: false,
+            charHighlight: 0,
+            gridSearch: "",
+            gridFilter: "all",
+            inspected: null,
+            publicSiteUrl: resolveInitialUrl(),
+            shareOpen: false,
+            copied: false,
+            importText: "",
+            importError: ""
+        };
+
+        const currentBuild = () => state.builds[state.universe];
+        const updateBuild = (patch) => Object.assign(state.builds[state.universe], patch);
+
+        /* ==========================================================================
+           4. SYNERGY & UNIFIED TILE ENGINE
+           ========================================================================== */
+        function computeDerived() {
+            const u = state.universe;
+            const uData = DATA[u];
+            const build = currentBuild();
+            const charObj = uData.charMap.get(build.character) || null;
+            const stageObj = uData.stageMap.get(build.map) || null;
+            const lockedSet = new Set(charObj ? charObj.weapons : []);
+            const bonusW = stageObj ? stageObj.weapons : [];
+            const bonusP = stageObj ? stageObj.passives : [];
+
+            const grantType = charObj ? charObj.grantType : null;
+            const hasArcheotech = u === "40k" && (grantType === CONFIG.FLAG_TYPES.ARCHEOTECH || build.freeGrantUnsealed);
+            const hasReliquary = u === "40k" && (grantType === CONFIG.FLAG_TYPES.RELIQUARY || hasArcheotech);
+            const hasExotic = u === "aos" && (grantType === CONFIG.FLAG_TYPES.EXOTIC || build.freeGrantUnsealed);
+            const grantBaseObj = (hasArcheotech || hasExotic) && build.grantBaseWeapon ? uData.weaponLookup.get(build.grantBaseWeapon) : null;
+
+            const activeWeapons = [...build.weapons];
+            if (grantBaseObj && !activeWeapons.some((w) => w.name === grantBaseObj.name)) activeWeapons.push(grantBaseObj);
+            for (const wName of bonusW) {
+                if (!activeWeapons.some((w) => w.name === wName)) {
+                    const wObj = uData.weaponLookup.get(wName);
+                    if (wObj) activeWeapons.push(wObj);
+                }
+            }
+            const activeWeaponSet = new Set(activeWeapons.map((w) => w.name));
+            const activePassives = new Set([...build.passives, ...bonusP]);
+
+            const uskavarUnlocked = u === "aos" && (
+                activeWeaponSet.has("Uskavar the Sunderer") ||
+                (activeWeaponSet.has("Stormcharged Warhammer") && activePassives.has("Tactical Rock"))
+            );
+
+            // Synergy Matrix
+            const ready = [];
+            const readyWeapons = new Set();
+            const fullyEvolved = new Set();
+            const missingPassive = [];
+            const missingWeapon = [];
+
+            if (hasReliquary && build.reliquaryEvoWeapon) {
+                ready.push({ weapon: "Reliquary", passive: "Bypasses Prerequisites", evolution: build.reliquaryEvoWeapon, isBypass: true });
+            }
+
+            for (const w of activeWeapons) {
+                const firstReady = !w.passive || activePassives.has(w.passive);
+                if (firstReady) {
+                    readyWeapons.add(w.name);
+                    ready.push({ weapon: w.name, passive: w.passive || "Max Level / Pickup", evolution: w.evolution });
+                } else {
+                    missingPassive.push({ weapon: w.name, passive: w.passive, evolution: w.evolution });
+                }
+
+                if (w.secondEvolution && firstReady) {
+                    if (activePassives.has(w.secondEvolution.passive)) {
+                        fullyEvolved.add(w.name);
+                        ready.push({ weapon: w.evolution, passive: w.secondEvolution.passive, evolution: w.secondEvolution.name });
+                    } else {
+                        missingPassive.push({ weapon: w.evolution, passive: w.secondEvolution.passive, evolution: w.secondEvolution.name });
+                    }
+                } else if (firstReady) {
+                    fullyEvolved.add(w.name);
+                }
+            }
+
+            for (const p of activePassives) {
+                for (const w of uData.weapons) {
+                    if (w.passive === p && !activeWeaponSet.has(w.name)) {
+                        missingWeapon.push({ weapon: w.name, passive: p, evolution: w.evolution });
+                    }
+                }
+            }
+
+            const neededPassives = new Map();
+            for (const w of activeWeapons) {
+                if (w.passive) {
+                    if (!neededPassives.has(w.passive)) neededPassives.set(w.passive, []);
+                    neededPassives.get(w.passive).push(w.name);
+                }
+                if (w.secondEvolution && w.secondEvolution.passive && uskavarUnlocked) {
+                    const sp = w.secondEvolution.passive;
+                    if (!neededPassives.has(sp)) neededPassives.set(sp, []);
+                    neededPassives.get(sp).push(`${w.evolution} (${w.name})`);
+                }
+            }
+            const matchingWeapons = new Set(uData.weapons.filter((w) => w.passive && activePassives.has(w.passive)).map((w) => w.name));
+
+            // Unified Weapon & Evolution Tiles
+            const rawWeaponTiles = [];
+            for (const w of uData.weapons) {
+                if (w.isSlotFreeGrant) {
+                    const isAuto = (w.name === "Archeotech" && grantType === CONFIG.FLAG_TYPES.ARCHEOTECH) || (w.name === "Exotic Weaponry" && grantType === CONFIG.FLAG_TYPES.EXOTIC);
+                    const isActive = isAuto || build.freeGrantUnsealed;
+                    const status = isAuto ? CONFIG.TILE_STATES.AUTO : isActive ? CONFIG.TILE_STATES.GRANT : CONFIG.TILE_STATES.SEALED;
+                    rawWeaponTiles.push({
+                        kind: "base", id: `w:${w.name}`, name: w.name, state: status, status,
+                        tag: isAuto ? "CHAR" : isActive ? "0 SLOT" : "",
+                        waxSeal: !isActive, brackets: true, evoReady: isActive,
+                        searchKeys: [w.name, w.evolution],
+                        detail: `${w.name} — Grants 1 Weapon of Choice at start (uses 0 of ${CONFIG.SLOTS.MAX_WEAPONS} weapon slots)`
+                    });
+                    if (w.evolution === "Reliquary") {
+                        const evoState = grantType === CONFIG.FLAG_TYPES.RELIQUARY ? CONFIG.TILE_STATES.AUTO_RELIQUARY : hasReliquary ? CONFIG.TILE_STATES.JOB_DONE : CONFIG.TILE_STATES.DISABLED;
+                        rawWeaponTiles.push({
+                            kind: "evolution", id: "e:Reliquary", name: "Reliquary", state: evoState, evoState,
+                            tag: hasReliquary ? "0 SLOT ★" : "", tagPos: "top",
+                            evoLock: !hasReliquary, brackets: hasReliquary, evoReady: hasReliquary,
+                            searchKeys: ["Reliquary", "Archeotech"],
+                            detail: hasReliquary
+                                ? "ACTIVE (0 Slots) — Grants 1 Evolved Weapon of Choice bypassing prerequisites"
+                                : "Unlocks automatically when Archeotech is unsealed (0 slots used)"
+                        });
+                    }
+                    continue;
+                }
+
+                const isAuto = lockedSet.has(w.name);
+                const isStage = bonusW.includes(w.name);
+                const isGrant = build.grantBaseWeapon === w.name;
+                const isSelected = !isAuto && (build.weapons.some((bw) => bw.name === w.name) || isGrant);
+                const status = isAuto ? CONFIG.TILE_STATES.AUTO : isStage ? CONFIG.TILE_STATES.STAGE : isGrant ? CONFIG.TILE_STATES.GRANT : isSelected ? CONFIG.TILE_STATES.SELECTED : CONFIG.TILE_STATES.SEALED;
+                const isSealed = status === CONFIG.TILE_STATES.SEALED;
+                const isEvoReady = !isSealed && readyWeapons.has(w.name);
+                const isNeedsUpgrade = !isSealed && !fullyEvolved.has(w.name);
+                const isSynergized = isSealed && matchingWeapons.has(w.name);
+                const isFull = isSealed && build.weapons.length >= CONFIG.SLOTS.MAX_WEAPONS;
+
+                rawWeaponTiles.push({
+                    kind: "base", id: `w:${w.name}`, name: w.name,
+                    state: isSynergized ? CONFIG.TILE_STATES.SYNERGY : status, status,
+                    tag: isSynergized ? "★" : status === CONFIG.TILE_STATES.AUTO ? "CHAR" : status === CONFIG.TILE_STATES.GRANT ? "FREE" : status === CONFIG.TILE_STATES.STAGE ? "STAGE" : status === CONFIG.TILE_STATES.SELECTED ? "✓" : "",
+                    tagShape: (isSynergized || status === CONFIG.TILE_STATES.SELECTED) ? "square" : "",
+                    waxSeal: isSealed, brackets: status !== CONFIG.TILE_STATES.STAGE,
+                    evoReady: isEvoReady, needsUpgrade: isNeedsUpgrade, synergized: isSynergized, full: isFull,
+                    searchKeys: [w.name, w.evolution, w.passive, w.secondEvolution?.name, w.secondEvolution?.passive],
+                    detail: w.secondEvolution
+                        ? `Pairs with ${w.passive} → ${w.evolution} (+ ${w.secondEvolution.passive} → ${w.secondEvolution.name})`
+                        : w.passive ? `Pairs with ${w.passive} → ${w.evolution}` : w.evolution ? `Evolves into ${w.evolution}` : "Evolved Starting Weapon"
+                });
+
+                if (w.hasEvoTile && w.evolution) {
+                    const evoCharLocked = lockedSet.has(w.evolution);
+                    const relBypass = build.reliquaryEvoWeapon === w.evolution;
+                    if (evoCharLocked) {
+                        const evoStart = uData.weaponLookup.get(w.evolution);
+                        const evoReady = !evoStart?.passive || readyWeapons.has(w.evolution);
+                        rawWeaponTiles.push({
+                            kind: "base", id: `w:${w.evolution}`, name: w.evolution,
+                            state: CONFIG.TILE_STATES.AUTO, status: CONFIG.TILE_STATES.AUTO, tag: "CHAR", brackets: true,
+                            evoReady, needsUpgrade: Boolean(evoStart?.passive) && !evoReady,
+                            searchKeys: [w.evolution, evoStart?.passive, evoStart?.evolution],
+                            detail: evoStart?.passive ? `Pairs with ${evoStart.passive} → ${evoStart.evolution}` : "Evolved Starting Weapon"
+                        });
+                    } else {
+                        const evoState = relBypass ? CONFIG.TILE_STATES.JOB_DONE : isSealed ? CONFIG.TILE_STATES.DISABLED : isEvoReady ? CONFIG.TILE_STATES.JOB_DONE : CONFIG.TILE_STATES.UPGRADE_ME;
+                        rawWeaponTiles.push({
+                            kind: "evolution", id: `e:${w.evolution}`, name: w.evolution,
+                            state: evoState, evoState, passiveName: w.passive,
+                            tag: evoState === CONFIG.TILE_STATES.JOB_DONE ? "DONE ★" : evoState === CONFIG.TILE_STATES.UPGRADE_ME ? "! UPGRADE" : "",
+                            tagPos: "top", evoLock: evoState === CONFIG.TILE_STATES.DISABLED, brackets: evoState !== CONFIG.TILE_STATES.DISABLED,
+                            evoReady: evoState === CONFIG.TILE_STATES.JOB_DONE, needsUpgrade: evoState === CONFIG.TILE_STATES.UPGRADE_ME,
+                            searchKeys: [w.evolution, w.name, w.passive],
+                            detail: relBypass
+                                ? "RELIQUARY BYPASS! Granted directly with 0 slots & 0 passive requirements"
+                                : evoState === CONFIG.TILE_STATES.DISABLED
+                                    ? `Evolution of ${w.name} (Sealed — unseal ${w.name} first)`
+                                    : evoState === CONFIG.TILE_STATES.UPGRADE_ME
+                                        ? `UPGRADE ME! Base ${w.name} is active — select ${w.passive} in Passives to evolve`
+                                        : w.passive ? `JOB DONE! ${w.name} + ${w.passive} → ${w.evolution}` : `JOB DONE! ${w.name} → ${w.evolution}`
+                        });
+                    }
+                }
+            }
+
+            // Unified Passive Tiles
+            const rawPassiveTiles = uData.passives.map((pName) => {
+                const status = bonusP.includes(pName) ? CONFIG.TILE_STATES.STAGE : build.passives.includes(pName) ? CONFIG.TILE_STATES.SELECTED : CONFIG.TILE_STATES.SEALED;
+                const isSealed = status === CONFIG.TILE_STATES.SEALED;
+                const neededBy = neededPassives.get(pName) || [];
+                const isSynergized = isSealed && neededBy.length > 0;
+                const isFull = isSealed && build.passives.length >= CONFIG.SLOTS.MAX_PASSIVES;
+                const directW = uData.weapons.filter((w) => w.passive === pName);
+                const secondW = uData.weapons.filter((w) => w.secondEvolution?.passive === pName);
+                const targets = [
+                    ...directW.map((w) => `${w.name} → ${w.evolution}`),
+                    ...secondW.map((w) => `${w.evolution} → ${w.secondEvolution.name}`)
+                ];
+                const pairedReady = !isSealed && (
+                    directW.some((w) => readyWeapons.has(w.name)) ||
+                    (uskavarUnlocked && secondW.some((w) => fullyEvolved.has(w.name) || readyWeapons.has(w.evolution)))
+                );
+
+                return {
+                    kind: "passive", id: `p:${pName}`, name: pName,
+                    state: isSynergized ? CONFIG.TILE_STATES.SYNERGY : status, status,
+                    tag: isSynergized ? "★" : status === CONFIG.TILE_STATES.STAGE ? "STAGE" : status === CONFIG.TILE_STATES.SELECTED ? "✓" : "",
+                    tagShape: (isSynergized || status === CONFIG.TILE_STATES.SELECTED) ? "square" : "",
+                    waxSeal: isSealed, brackets: status !== CONFIG.TILE_STATES.STAGE,
+                    evoReady: pairedReady, synergized: isSynergized, full: isFull,
+                    searchKeys: [pName, ...directW.flatMap((w) => [w.name, w.evolution]), ...secondW.flatMap((w) => [w.name, w.evolution, w.secondEvolution.name])],
+                    detail: targets.length ? `Evolves: ${targets.join(", ")}` : "Utility Passive"
+                };
+            });
+
+            const applyCoordsAndFilter = (tiles) => {
+                const q = state.gridSearch.trim().toLowerCase();
+                return tiles
+                    .map((t, i) => ({ ...t, row: Math.floor(i / CONFIG.GRID.COLUMNS) + 1, col: (i % CONFIG.GRID.COLUMNS) + 1 }))
+                    .filter((t) => {
+                        if (q && !t.searchKeys.some((k) => k && k.toLowerCase().includes(q))) return false;
+                        if (state.gridFilter === "synergy") return t.synergized || t.evoReady || t.needsUpgrade;
+                        if (state.gridFilter === "unsealed") return !t.waxSeal && !t.evoLock;
+                        if (state.gridFilter === "sealed") return Boolean(t.waxSeal || t.evoLock);
+                        return true;
+                    });
+            };
+
+            const synergyPickCount =
+                rawWeaponTiles.filter((t) => t.kind === "base" && t.synergized).length +
+                rawPassiveTiles.filter((t) => t.synergized).length;
+
+            return {
+                uData, build, charObj, stageObj, lockedSet, bonusW, bonusP,
+                hasArcheotech, hasReliquary, hasExotic,
+                ready, missingPassive, missingWeapon,
+                weaponTiles: applyCoordsAndFilter(rawWeaponTiles),
+                passiveTiles: applyCoordsAndFilter(rawPassiveTiles),
+                synergyPickCount
+            };
+        }
+
+        /* ==========================================================================
+           5. MUTATIONS & ACTIONS
+           ========================================================================== */
+        function selectCharacter(charName) {
+            const uData = DATA[state.universe];
+            const build = currentBuild();
+            const oldChar = uData.charMap.get(build.character);
+            const oldLocked = new Set(oldChar ? oldChar.weapons : []);
+            const nextChar = uData.charMap.get(charName) || null;
+
+            if (!nextChar) {
+                updateBuild({
+                    character: null,
+                    weapons: build.weapons.filter((w) => !oldLocked.has(w.name)),
+                    grantBaseWeapon: build.freeGrantUnsealed ? build.grantBaseWeapon : "",
+                    reliquaryEvoWeapon: build.freeGrantUnsealed ? build.reliquaryEvoWeapon : ""
+                });
+                state.charQuery = "";
+                state.charOpen = false;
+                return;
+            }
+
+            const newLockedObjs = nextChar.weapons.map((w) => uData.weaponLookup.get(w)).filter((w) => w && !w.isSlotFreeGrant);
+            const newLockedSet = new Set(newLockedObjs.map((w) => w.name));
+            let kept = build.weapons.filter((w) => !oldLocked.has(w.name) && !newLockedSet.has(w.name));
+            const maxExtra = Math.max(0, CONFIG.SLOTS.MAX_WEAPONS - newLockedObjs.length);
+            if (kept.length > maxExtra) kept = kept.slice(0, maxExtra);
+
+            const willHaveGrant = nextChar.grantType === CONFIG.FLAG_TYPES.ARCHEOTECH || nextChar.grantType === CONFIG.FLAG_TYPES.EXOTIC || build.freeGrantUnsealed;
+            const willHaveRel = nextChar.grantType === CONFIG.FLAG_TYPES.RELIQUARY || nextChar.grantType === CONFIG.FLAG_TYPES.ARCHEOTECH || (state.universe === "40k" && build.freeGrantUnsealed);
+
+            updateBuild({
+                character: nextChar.name,
+                weapons: [...newLockedObjs, ...kept],
+                grantBaseWeapon: willHaveGrant ? build.grantBaseWeapon : "",
+                reliquaryEvoWeapon: willHaveRel ? build.reliquaryEvoWeapon : ""
+            });
+            state.charQuery = nextChar.name;
+            state.charOpen = false;
+        }
+
+        function selectMap(mapName) {
+            if (!mapName) return updateBuild({ map: null });
+            const uData = DATA[state.universe];
+            const build = currentBuild();
+            const charObj = uData.charMap.get(build.character);
+            const lockedSet = new Set(charObj ? charObj.weapons : []);
+            const stage = uData.stageMap.get(mapName);
+            const bonusW = stage ? stage.weapons : [];
+            const bonusP = stage ? stage.passives : [];
+            updateBuild({
+                map: mapName,
+                weapons: build.weapons.filter((w) => lockedSet.has(w.name) || !bonusW.includes(w.name)),
+                passives: build.passives.filter((p) => !bonusP.includes(p))
+            });
+        }
+
+        function toggleWeapon(wName) {
+            const uData = DATA[state.universe];
+            const build = currentBuild();
+            const wObj = uData.weaponLookup.get(wName);
+            if (!wObj) return;
+
+            if (wObj.isSlotFreeGrant) {
+                const charObj = uData.charMap.get(build.character);
+                if (charObj && (charObj.grantType === CONFIG.FLAG_TYPES.ARCHEOTECH || charObj.grantType === CONFIG.FLAG_TYPES.EXOTIC)) return;
+                const next = !build.freeGrantUnsealed;
+                updateBuild({
+                    freeGrantUnsealed: next,
+                    grantBaseWeapon: next ? build.grantBaseWeapon : "",
+                    reliquaryEvoWeapon: next ? build.reliquaryEvoWeapon : ""
+                });
+                return;
+            }
+
+            const charObj = uData.charMap.get(build.character);
+            const stageObj = uData.stageMap.get(build.map);
+            if (charObj?.weapons.includes(wName) || stageObj?.weapons.includes(wName)) return;
+
+            const exists = build.weapons.some((w) => w.name === wName);
+            if (exists) {
+                updateBuild({ weapons: build.weapons.filter((w) => w.name !== wName) });
+            } else if (build.weapons.length < CONFIG.SLOTS.MAX_WEAPONS) {
+                updateBuild({ weapons: [...build.weapons, wObj] });
+            }
+        }
+
+        function togglePassive(pName) {
+            const uData = DATA[state.universe];
+            const build = currentBuild();
+            const stageObj = uData.stageMap.get(build.map);
+            if (!pName || stageObj?.passives.includes(pName)) return;
+
+            if (build.passives.includes(pName)) {
+                updateBuild({ passives: build.passives.filter((p) => p !== pName) });
+            } else if (build.passives.length < CONFIG.SLOTS.MAX_PASSIVES) {
+                updateBuild({ passives: [...build.passives, pName] });
+            }
+        }
+
+        async function copyShareUrl(url) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(url);
+                    return true;
+                }
+            } catch {}
+            try {
+                const ta = document.createElement("textarea");
+                ta.value = url;
+                ta.style.cssText = "position:fixed;left:-9999px";
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand("copy");
+                ta.remove();
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        /* ==========================================================================
+           6. UNIFIED RENDERING & DELEGATED DOM BINDING
+           ========================================================================== */
+        const appEl = document.getElementById("app");
+        let tileIndex = new Map();
+        let lastUniverseRendered = null;
+
+        function getFilteredChars() {
+            const uData = DATA[state.universe];
+            const q = state.charQuery.trim().toLowerCase();
+            const sel = currentBuild().character;
+            if (!q || (sel && q === sel.toLowerCase())) return uData.characters;
+            return uData.characters.filter((c) =>
+                c.name.toLowerCase().includes(q) ||
+                c.weapons.some((w) => w.toLowerCase().includes(q)) ||
+                (c.passive && c.passive.toLowerCase().includes(q)) ||
+                (c.grantType && c.grantType.toLowerCase().includes(q))
+            );
+        }
+
+        function renderTile(t) {
+            const isEvo = t.kind === "evolution";
+            const tagEl = isEvo ? "div" : "button";
+            const actionAttr = isEvo ? `aria-disabled="true"` : `type="button" data-action="${t.kind === "passive" ? "toggle-passive" : "toggle-weapon"}" data-name="${esc(t.name)}"`;
+            const tagHtml = t.tag
+                ? `<span class="ws-tile-tag"${t.tagPos ? ` data-pos="${t.tagPos}"` : ""}${t.tagShape ? ` data-shape="${t.tagShape}"` : ""}>${t.tag === "✓" ? svg("check", 10, 3.5) : esc(t.tag)}</span>`
+                : "";
+
+            return `<${tagEl} class="ws-tile" data-tile-id="${esc(t.id)}" data-state="${t.state}" data-brackets="${t.brackets ? "true" : "false"}"${t.evoReady ? ` data-evo-ready="true"` : ""}${t.full ? ` data-full="true"` : ""} ${actionAttr} title="${esc(`${t.name} (R${t.row}:C${t.col}) — ${t.detail}`)}">` +
+                (t.waxSeal ? WAX_SEAL_SVG : "") +
+                `<div class="ws-tile-sprite">${spriteHtml(t.name)}</div>` +
+                (t.evoLock ? `<span class="ws-evo-lock">${svg("lock", 10)}</span>` : "") +
+                tagHtml +
+                `</${tagEl}>`;
+        }
+
+        function renderInspector(item) {
+            if (!item) {
+                return `<p class="ws-meta" style="margin:0">Click base weapons &amp; passives to toggle your <strong style="color:#34d399">${CONFIG.SLOTS.MAX_WEAPONS}+${CONFIG.SLOTS.MAX_PASSIVES} slots</strong>. <strong style="color:#5eead4">Archeotech</strong>, <strong style="color:#fde047">Reliquary</strong> &amp; <strong style="color:#5eead4">Exotic Weaponry</strong> use <strong style="color:var(--zinc-200)">0 slots</strong>.</p>`;
+            }
+            const statusBadge = item.kind === "evolution"
+                ? ({
+                    [CONFIG.TILE_STATES.AUTO_RELIQUARY]: ["done", "Reliquary (0 Slots • Bypasses Req)"],
+                    [CONFIG.TILE_STATES.JOB_DONE]: ["done", "Job Done — Evolution Ready"],
+                    [CONFIG.TILE_STATES.UPGRADE_ME]: ["upgrade", `Upgrade Me — Equip ${item.passiveName || "Passive"}`],
+                    [CONFIG.TILE_STATES.DISABLED]: ["muted", "Disabled (Base Sealed)"]
+                }[item.evoState] || ["muted", "Disabled"])
+                : ({
+                    [CONFIG.TILE_STATES.AUTO]: ["char", "Locked by Character"],
+                    [CONFIG.TILE_STATES.GRANT]: ["grant", "Free Grant (0 Slots Used)"],
+                    [CONFIG.TILE_STATES.SELECTED]: ["selected", "Manually Selected"],
+                    [CONFIG.TILE_STATES.STAGE]: ["stage", "Stage Implied"],
+                    [CONFIG.TILE_STATES.SEALED]: ["sealed", "Sealed in Game"]
+                }[item.status] || ["sealed", "Sealed"]);
+
+            return `<div class="ws-row ws-min-0" style="gap:0.75rem">` +
+                `<div class="ws-inspector-thumb">${spriteHtml(item.name)}</div>` +
+                `<div class="ws-min-0">` +
+                `<div class="ws-row"><span class="ws-truncate" style="font-size:12px;font-weight:700;color:var(--zinc-100)">${esc(item.name)}</span><span class="ws-mono" style="font-size:10px;color:var(--zinc-500)">R${item.row}:C${item.col}</span></div>` +
+                `<div class="ws-truncate ws-meta">${esc(item.detail)}</div>` +
+                `</div>` +
+                `</div>` +
+                `<div class="ws-row-sm ws-shrink-0">` +
+                (item.kind !== "evolution" && item.evoReady ? `<span class="ws-pill" data-tone="done">Job Done ★</span>` : "") +
+                (item.kind !== "evolution" && item.needsUpgrade ? `<span class="ws-pill" data-tone="upgrade">Upgrade Me</span>` : "") +
+                (item.synergized ? `<span class="ws-pill" data-tone="synergy">★ Synergy Pick</span>` : "") +
+                `<span class="ws-pill" data-tone="${statusBadge[0]}">${esc(statusBadge[1])}</span>` +
+                `</div>`;
+        }
+
+        function mountShell() {
+            appEl.innerHTML = `
+                    <header class="ws-header">
+                        <div class="ws-container ws-header-inner">
+                            <div class="ws-row" style="gap:0.75rem">
+                                <div class="ws-emblem">${svg("shield", 20)}</div>
+                                <div>
+                                    <h1 class="ws-title">Warhammer Survivors <span>Bit Box Planner</span></h1>
+                                    <p id="ws-subtitle" class="ws-subtitle"></p>
+                                </div>
+                            </div>
+                            <div class="ws-row-wrap" style="gap:0.5rem">
+                                <div class="ws-segmented">
+                                    <button type="button" class="ws-seg-btn" data-action="switch-universe" data-val="40k" aria-pressed="true">40,000</button>
+                                    <button type="button" class="ws-seg-btn" data-action="switch-universe" data-val="aos" aria-pressed="false">Age of Sigmar</button>
+                                </div>
+                                <button type="button" class="ws-btn" data-variant="share" data-action="open-share">${svg("share", 14)}<span>Share / Load</span></button>
+                                <button type="button" class="ws-btn" data-action="reset-build" title="Reset current universe build">${svg("reset", 14)}<span class="ws-hide-mobile">Reset</span></button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main class="ws-container ws-layout">
+                        <div class="ws-col-left ws-stack">
+                            <section class="ws-panel">
+                                <div class="ws-panel-head">
+                                    <h2 class="ws-heading">${svg("compass", 16)}<span>Mission Deployment</span></h2>
+                                    <span id="ws-universe-label" class="ws-mono ws-meta"></span>
+                                </div>
+
+                                <div id="ws-char-box" class="ws-rel">
+                                    <label class="ws-label" for="ws-char-input">Survivor / Champion (Locks Starting Weapon)</label>
+                                    <div class="ws-rel">
+                                        <span class="ws-input-icon">${svg("search", 14)}</span>
+                                        <input id="ws-char-input" type="text" class="ws-input has-icon" placeholder="Type character, starting weapon, or trait..." autocomplete="off" />
+                                        <button id="ws-char-clear" type="button" class="ws-input-clear" data-action="clear-char" title="Clear character" hidden>${svg("x", 14)}</button>
+                                    </div>
+                                    <div id="ws-char-dropdown" class="ws-dropdown" hidden></div>
+                                    <div id="ws-char-callout"></div>
+                                </div>
+
+                                <div id="ws-grants-box" class="ws-divider-top ws-stack-md" hidden></div>
+
+                                <div class="ws-divider-top">
+                                    <label class="ws-label" for="ws-stage-select">Stage / Mission Map (Grants Free Ground Pickups)</label>
+                                    <select id="ws-stage-select" class="ws-select"></select>
+                                    <div id="ws-stage-callout"></div>
+                                </div>
+                            </section>
+
+                            <section id="ws-matrix" class="ws-panel"></section>
+                        </div>
+
+                        <div class="ws-col-right">
+                            <section class="ws-panel" style="gap:1.25rem">
+                                <div class="ws-stack-md" style="padding-bottom:1rem;border-bottom:1px solid var(--bd-divider)">
+                                    <div class="ws-between" style="flex-wrap:wrap;gap:0.5rem">
+                                        <h2 class="ws-heading"><span>Bit Box</span><span class="ws-mono-pill" style="font-size:10px;color:var(--zinc-400)">${CONFIG.GRID.COLUMNS} Per Row</span></h2>
+                                        <div class="ws-row-wrap">
+                                            <span class="ws-pill" data-tone="char">Char</span>
+                                            <span class="ws-pill" data-tone="selected">${svg("check", 10, 3)}Selected</span>
+                                            <span class="ws-pill" data-tone="stage">Stage</span>
+                                            <span class="ws-pill" data-tone="grant">Free Pick</span>
+                                            <span class="ws-pill" data-tone="synergy">★ Synergy</span>
+                                            <span class="ws-pill" data-tone="upgrade">! Upgrade</span>
+                                            <span class="ws-pill" data-tone="done">Done ★</span>
+                                            <span class="ws-pill" data-tone="sealed">${svg("x", 10, 3)}Sealed</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="ws-toolbar">
+                                        <div class="ws-rel ws-flex-1">
+                                            <span class="ws-input-icon">${svg("search", 14)}</span>
+                                            <input id="ws-grid-search" type="text" class="ws-input has-icon" placeholder="Filter weapons, evolutions, or passives..." />
+                                            <button id="ws-search-clear" type="button" class="ws-input-clear" data-action="clear-search" title="Clear search" hidden>${svg("x", 14)}</button>
+                                        </div>
+                                        <div id="ws-filter-tabs" class="ws-segmented" style="align-self:flex-start"></div>
+                                    </div>
+
+                                    <div id="ws-inspector" class="ws-inspector"></div>
+                                </div>
+
+                                <div>
+                                    <div class="ws-between" style="margin-bottom:0.625rem">
+                                        <h3 class="ws-sub-heading">${svg("crosshair", 14)}<span>Weapons</span></h3>
+                                        <div id="ws-weapons-meta" class="ws-row"></div>
+                                    </div>
+                                    <div id="ws-weapons-grid" class="ws-bitbox"></div>
+                                </div>
+
+                                <div>
+                                    <div class="ws-between" style="margin-bottom:0.625rem">
+                                        <h3 class="ws-sub-heading">${svg("hexagon", 14)}<span>Passives</span></h3>
+                                        <div id="ws-passives-meta" class="ws-row"></div>
+                                    </div>
+                                    <div id="ws-passives-grid" class="ws-bitbox"></div>
+                                </div>
+                            </section>
+                        </div>
+                    </main>
+
+                    <div id="ws-modal" class="ws-modal-backdrop" hidden></div>
+                `;
+        }
+
+        function render() {
+            const d = computeDerived();
+            const { uData, build, charObj, stageObj } = d;
+
+            appEl.dataset.universe = state.universe;
+            appEl.style.setProperty("--grid-cols", CONFIG.GRID.COLUMNS);
+            document.getElementById("ws-subtitle").textContent = uData.subtitle;
+            document.getElementById("ws-universe-label").textContent = uData.label;
+
+            appEl.querySelectorAll('[data-action="switch-universe"]').forEach((btn) => {
+                btn.setAttribute("aria-pressed", String(btn.dataset.val === state.universe));
+            });
+
+            const hash = encodeBuildHash(state.universe, build);
+            if (hash) {
+                try { history.replaceState(null, "", `#${hash}`); } catch {}
+            }
+
+            const charInput = document.getElementById("ws-char-input");
+            if (document.activeElement !== charInput) charInput.value = state.charQuery;
+            document.getElementById("ws-char-clear").hidden = !(state.charQuery || build.character);
+
+            const ddEl = document.getElementById("ws-char-dropdown");
+            ddEl.hidden = !state.charOpen;
+            if (state.charOpen) {
+                const list = getFilteredChars();
+                ddEl.innerHTML = list.length === 0
+                    ? `<div class="ws-meta" style="padding:0.625rem 0.75rem;font-style:italic">No survivors match "${esc(state.charQuery)}"</div>`
+                    : list.map((c, idx) => {
+                        const rightTag = c.weapons.length
+                            ? `${svg("lock", 10)}${esc(c.weapons.join(" + "))}`
+                            : `<span style="color:${c.grantType === CONFIG.FLAG_TYPES.RELIQUARY ? "#fde047" : "#5eead4"}">${c.grantType === CONFIG.FLAG_TYPES.ARCHEOTECH ? "Archeotech (Free Choice)" : c.grantType === CONFIG.FLAG_TYPES.RELIQUARY ? "Reliquary (Free Evo)" : "Exotic Weaponry (Free Choice)"}</span>`;
+                        return `<button type="button" class="ws-dd-item" data-action="select-char" data-name="${esc(c.name)}" data-idx="${idx}" data-selected="${c.name === build.character}" data-active="${idx === state.charHighlight}">` +
+                            `<div class="ws-between"><div class="ws-row-sm ws-min-0"><span class="ws-truncate" style="font-weight:${c.name === build.character ? 700 : 600}">${esc(c.name)}</span>${c.isAlt ? `<span class="ws-pill" data-tone="alt">Alt Skin</span>` : ""}</div><span class="ws-mono ws-row-sm ws-shrink-0" style="font-size:11px;color:#fbbf24">${rightTag}</span></div>` +
+                            (c.passive ? `<p class="ws-meta" style="margin:0;line-height:1.35">${esc(c.passive)}</p>` : "") +
+                            `</button>`;
+                    }).join("");
+            }
+
+            const charCallout = document.getElementById("ws-char-callout");
+            charCallout.innerHTML = charObj ? `<div class="ws-callout" data-tone="char">` +
+                `<div class="ws-between" style="flex-wrap:wrap;gap:0.5rem">` +
+                (charObj.weapons.length
+                    ? `<span class="ws-row-sm" style="color:rgba(253,230,138,0.9)">${svg("lock", 14)}<span>Locked ${charObj.weapons.length > 1 ? "Weapons" : "Weapon"}:</span></span><div class="ws-row-wrap">${charObj.weapons.map((w) => `<span class="ws-pill" data-tone="char">${esc(w)}</span>`).join("")}</div>`
+                    : `<span class="ws-row-sm" style="color:#5eead4">${svg("wand", 14)}<span>${charObj.grantType === CONFIG.FLAG_TYPES.ARCHEOTECH ? "Starts with Archeotech + Reliquary (0 Weapon Slots Used)" : charObj.grantType === CONFIG.FLAG_TYPES.RELIQUARY ? "Starts with Reliquary (Free Evolved Weapon • 0 Slots Used)" : "Starts with Exotic Weaponry (Free Weapon Choice • 0 Slots Used)"}</span></span>`) +
+                `</div>` +
+                (charObj.passive ? `<div class="ws-trait-box"><strong style="text-transform:uppercase;font-size:10px;letter-spacing:0.05em;color:#fbbf24;margin-right:0.375rem">Trait:</strong>${esc(charObj.passive)}</div>` : "") +
+                `</div>` : "";
+
+            const grantsBox = document.getElementById("ws-grants-box");
+            const hasAnyGrant = d.hasArcheotech || d.hasExotic || d.hasReliquary;
+            grantsBox.hidden = !hasAnyGrant;
+            if (hasAnyGrant) {
+                const baseOpts = uData.weapons.filter((w) => !w.isSlotFreeGrant).map((w) =>
+                    `<option value="${esc(w.name)}"${build.grantBaseWeapon === w.name ? " selected" : ""}>${esc(w.name + (w.passive ? ` (Pairs with ${w.passive} → ${w.evolution})` : ""))}</option>`
+                ).join("");
+                const evoOpts = uData.allEvos.map((e) =>
+                    `<option value="${esc(e)}"${build.reliquaryEvoWeapon === e ? " selected" : ""}>${esc(e)}</option>`
+                ).join("");
+
+                grantsBox.innerHTML =
+                    ((d.hasArcheotech || d.hasExotic) ? `<div class="ws-callout" data-tone="grant">` +
+                        `<div class="ws-between"><span class="ws-section-label" style="color:#5eead4">${svg("wand", 14)}<span>${d.hasArcheotech ? "Archeotech — Weapon of Choice (Free Slot)" : "Exotic Weaponry — Weapon of Choice (Free Slot)"}</span></span><span class="ws-pill" data-tone="grant">0 / 6 Slots</span></div>` +
+                        `<select id="ws-grant-base" class="ws-select"><option value="">-- Choose Any Starting Base Weapon --</option>${baseOpts}</select>` +
+                        `</div>` : "") +
+                    (d.hasReliquary ? `<div class="ws-callout" data-tone="done">` +
+                        `<div class="ws-between"><span class="ws-section-label" style="color:#fde047">${svg("key", 14)}<span>Reliquary — Evolved Weapon (Bypasses Req)</span></span><span class="ws-pill" data-tone="done">Free Evo</span></div>` +
+                        `<select id="ws-reliquary-evo" class="ws-select"><option value="">-- Choose Any Evolved Weapon Directly --</option>${evoOpts}</select>` +
+                        `</div>` : "");
+            }
+
+            const stageSel = document.getElementById("ws-stage-select");
+            if (lastUniverseRendered !== state.universe) {
+                stageSel.innerHTML = `<option value="">-- Select Stage (Optional) --</option>` + uData.stages.map((s) =>
+                    `<option value="${esc(s.name)}">${esc(s.name + (s.weapons.length || s.passives.length ? ` (+${s.weapons.length}W / +${s.passives.length}P)` : " (No Ground Items)"))}</option>`
+                ).join("");
+                lastUniverseRendered = state.universe;
+            }
+            stageSel.value = build.map || "";
+
+            document.getElementById("ws-stage-callout").innerHTML = stageObj ? `<div class="ws-callout" data-tone="stage">` +
+                (stageObj.weapons.length ? `<div class="ws-row-wrap"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#7dd3fc;margin-right:0.25rem">Free Weapons:</span>${stageObj.weapons.map((w) => `<span class="ws-pill" data-tone="stage">${esc(w)}</span>`).join("")}</div>` : "") +
+                (stageObj.passives.length ? `<div class="ws-row-wrap"><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#7dd3fc;margin-right:0.25rem">Free Passives:</span>${stageObj.passives.map((p) => `<span class="ws-pill" data-tone="stage">${esc(p)}</span>`).join("")}</div>` : "") +
+                (stageObj.note ? `<p class="ws-meta" style="margin:0;line-height:1.35">${esc(stageObj.note)}</p>` : "") +
+                `</div>` : "";
+
+            document.getElementById("ws-matrix").innerHTML =
+                `<div class="ws-panel-head"><h2 class="ws-heading">${svg("sparkles", 16)}<span>Synergy Matrix</span></h2><span class="ws-mono" style="font-size:11px;color:#34d399">${d.ready.length} Ready</span></div>` +
+                `<div class="ws-stack-sm">` +
+                `<div class="ws-section-label" style="color:#34d399">${svg("award", 14)}<span>Complete Evolution Pairs (${d.ready.length})</span></div>` +
+                (d.ready.length === 0
+                    ? `<p class="ws-empty">No completed evolution pairs yet. Equip matching weapons and passives on the Bit Box grid.</p>`
+                    : `<div class="ws-stack-xs">${d.ready.map((r) => `<div class="ws-matrix-card" data-state="${r.isBypass ? "reliquary" : "ready"}"><div class="ws-min-0"><div class="ws-truncate" style="font-weight:700;color:${r.isBypass ? "#fde047" : "#6ee7b7"}">${esc(r.evolution)}</div><div class="ws-truncate ws-meta">${esc(`${r.weapon} + ${r.passive}`)}</div></div><span class="ws-pill" data-tone="${r.isBypass ? "done" : "selected"}">${r.isBypass ? "RELIQUARY" : "READY"}</span></div>`).join("")}</div>`) +
+                `</div>` +
+                (d.missingPassive.length ? `<div class="ws-divider-top ws-stack-sm">` +
+                    `<div class="ws-section-label" style="color:#fbbf24">${svg("flame", 14)}<span>Missing Passives for Active Weapons (${d.missingPassive.length})</span></div>` +
+                    `<div class="ws-stack-xs">${d.missingPassive.map((m) => `<button type="button" class="ws-matrix-card" data-action="toggle-passive" data-name="${esc(m.passive)}"${build.passives.length >= CONFIG.SLOTS.MAX_PASSIVES ? " disabled" : ""}><div class="ws-min-0"><div class="ws-truncate" style="font-weight:600">Need <strong style="color:#e879f9">${esc(m.passive)}</strong></div><div class="ws-truncate ws-meta">${esc(`${m.weapon} → ${m.evolution}`)}</div></div><span class="ws-pill" data-tone="synergy">+ Equip</span></button>`).join("")}</div>` +
+                    `</div>` : "") +
+                (d.missingWeapon.length ? `<div class="ws-divider-top ws-stack-sm">` +
+                    `<div class="ws-section-label" style="color:#e879f9"><span>Synergistic Weapons for Active Passives (${d.missingWeapon.length})</span></div>` +
+                    `<div class="ws-stack-xs">${d.missingWeapon.map((m) => `<button type="button" class="ws-matrix-card" data-action="toggle-weapon" data-name="${esc(m.weapon)}"${build.weapons.length >= CONFIG.SLOTS.MAX_WEAPONS ? " disabled" : ""}><div class="ws-min-0"><div class="ws-truncate" style="font-weight:600">Unseal <strong style="color:#e879f9">${esc(m.weapon)}</strong></div><div class="ws-truncate ws-meta">${esc(`Pairs with ${m.passive} → ${m.evolution}`)}</div></div><span class="ws-pill" data-tone="synergy">+ Equip</span></button>`).join("")}</div>` +
+                    `</div>` : "");
+
+            const searchInput = document.getElementById("ws-grid-search");
+            if (document.activeElement !== searchInput) searchInput.value = state.gridSearch;
+            document.getElementById("ws-search-clear").hidden = !state.gridSearch;
+
+            const tabs = [
+                { id: "all", label: "All" },
+                { id: "synergy", label: "Synergy", count: d.synergyPickCount },
+                { id: "unsealed", label: "Unsealed" },
+                { id: "sealed", label: "Sealed" }
+            ];
+            document.getElementById("ws-filter-tabs").innerHTML = tabs.map((t) =>
+                `<button type="button" class="ws-seg-btn" data-action="set-filter" data-val="${t.id}" data-variant="${t.id}" aria-pressed="${state.gridFilter === t.id}"><span>${t.label}</span>${t.count > 0 ? `<span class="ws-seg-count">${t.count}</span>` : ""}</button>`
+            ).join("");
+
+            tileIndex = new Map([...d.weaponTiles, ...d.passiveTiles].map((t) => [t.id, t]));
+            if (state.inspected) state.inspected = tileIndex.get(state.inspected.id) || null;
+            document.getElementById("ws-inspector").innerHTML = renderInspector(state.inspected);
+
+            const anyGrantActive = d.hasArcheotech || d.hasReliquary || d.hasExotic;
+            document.getElementById("ws-weapons-meta").innerHTML =
+                `<span class="ws-mono-pill">Slots: <strong>${build.weapons.length}</strong> / ${CONFIG.SLOTS.MAX_WEAPONS}</span>` +
+                (anyGrantActive ? `<span class="ws-pill" data-tone="grant">+Free Choice</span>` : "") +
+                (d.bonusW.length ? `<span class="ws-pill" data-tone="stage">+${d.bonusW.length} Stage</span>` : "");
+
+            document.getElementById("ws-weapons-grid").innerHTML = d.weaponTiles.length
+                ? `<div class="ws-grid">${d.weaponTiles.map(renderTile).join("")}</div>`
+                : `<div class="ws-grid-empty">No weapon or evolution tiles match the current filter.</div>`;
+
+            document.getElementById("ws-passives-meta").innerHTML =
+                `<span class="ws-mono-pill">Slots: <strong>${build.passives.length}</strong> / ${CONFIG.SLOTS.MAX_PASSIVES}</span>` +
+                (d.bonusP.length ? `<span class="ws-pill" data-tone="stage">+${d.bonusP.length} Stage</span>` : "");
+
+            document.getElementById("ws-passives-grid").innerHTML = d.passiveTiles.length
+                ? `<div class="ws-grid">${d.passiveTiles.map(renderTile).join("")}</div>`
+                : `<div class="ws-grid-empty">No passives match the current filter.</div>`;
+
+            const modalEl = document.getElementById("ws-modal");
+            modalEl.hidden = !state.shareOpen;
+            if (state.shareOpen) {
+                const cleanBase = (state.publicSiteUrl || CONFIG.URLS.DEFAULT_SITES).split("#")[0].trim();
+                const fullUrl = hash ? `${cleanBase}#${hash}` : cleanBase;
+                modalEl.innerHTML = `<div class="ws-modal">` +
+                    `<div class="ws-panel-head"><h3 class="ws-heading">${svg("share", 16)}<span>Share or Load Run Build</span></h3><button type="button" data-action="close-share" style="color:var(--zinc-400)">${svg("x", 16)}</button></div>` +
+                    (isGoogleSites ? `<div class="ws-callout" data-tone="char" style="margin-top:0;font-size:11px;color:rgba(253,230,138,0.9)">Google Sites embed detected: links automatically target your public Google Sites page URL instead of the internal iframe host.</div>` : "") +
+                    `<div><label class="ws-label ws-label-sm" for="ws-site-url">Hosted Page URL</label><input id="ws-site-url" type="text" class="ws-input ws-mono" style="color:var(--zinc-300)" value="${esc(state.publicSiteUrl)}" /></div>` +
+                    `<div><label class="ws-label ws-label-sm" for="ws-share-url">Shareable Build Link</label><div class="ws-row"><input id="ws-share-url" type="text" readonly class="ws-input ws-mono" style="color:#6ee7b7" value="${esc(fullUrl)}" /><button type="button" class="ws-btn" data-variant="primary" data-action="copy-share">${svg("copy", 14)}<span>${state.copied ? "Copied!" : "Copy"}</span></button></div></div>` +
+                    `<div class="ws-divider-top ws-stack-sm"><label class="ws-label ws-label-sm" style="margin:0" for="ws-import-input">Load Shared Build (Paste URL or #build=... Hash)</label><div class="ws-row"><input id="ws-import-input" type="text" class="ws-input ws-mono" placeholder="https://sites.google.com/...#build=..." value="${esc(state.importText)}" /><button type="button" class="ws-btn" data-variant="amber" data-action="load-share">${svg("upload", 14)}<span>Load</span></button></div>${state.importError ? `<p style="margin:0;font-size:11px;color:#f87171">${esc(state.importError)}</p>` : ""}</div>` +
+                    `</div>`;
+            }
+        }
+
+        /* ==========================================================================
+           7. DELEGATED EVENT LISTENERS
+           ========================================================================== */
+        mountShell();
+        render();
+
+        appEl.addEventListener("click", async (e) => {
+            const target = e.target.closest("[data-action]");
+            if (!target) return;
+            const { action, val, name } = target.dataset;
+
+            if (action === "switch-universe" && val !== state.universe) {
+                state.universe = val;
+                state.charQuery = currentBuild().character || "";
+                state.charOpen = false;
+                state.inspected = null;
+                render();
+            } else if (action === "reset-build") {
+                state.builds[state.universe] = emptyBuild();
+                state.charQuery = "";
+                state.gridSearch = "";
+                state.gridFilter = "all";
+                state.inspected = null;
+                render();
+            } else if (action === "clear-char") {
+                selectCharacter(null);
+                render();
+            } else if (action === "select-char") {
+                selectCharacter(name);
+                render();
+            } else if (action === "clear-search") {
+                state.gridSearch = "";
+                render();
+            } else if (action === "set-filter") {
+                state.gridFilter = val;
+                render();
+            } else if (action === "toggle-weapon") {
+                toggleWeapon(name);
+                render();
+            } else if (action === "toggle-passive") {
+                togglePassive(name);
+                render();
+            } else if (action === "open-share") {
+                state.importError = "";
+                state.shareOpen = true;
+                render();
+                const shareInput = document.getElementById("ws-share-url");
+                if (shareInput && await copyShareUrl(shareInput.value)) {
+                    state.copied = true;
+                    render();
+                    setTimeout(() => { state.copied = false; if (state.shareOpen) render(); }, 2500);
+                }
+            } else if (action === "close-share") {
+                state.shareOpen = false;
+                render();
+            } else if (action === "copy-share") {
+                const shareInput = document.getElementById("ws-share-url");
+                if (shareInput && await copyShareUrl(shareInput.value)) {
+                    state.copied = true;
+                    render();
+                    setTimeout(() => { state.copied = false; if (state.shareOpen) render(); }, 2500);
+                }
+            } else if (action === "load-share") {
+                const decoded = decodeBuildInput(state.importText);
+                if (!decoded) {
+                    state.importError = "Invalid link or #build= code. Paste a full planner URL or #build=... hash.";
+                    render();
+                    return;
+                }
+                state.universe = decoded.universe;
+                state.builds[decoded.universe] = decoded.build;
+                state.charQuery = decoded.build.character || "";
+                state.importText = "";
+                state.importError = "";
+                state.shareOpen = false;
+                render();
+            }
+        });
+
+        appEl.addEventListener("input", (e) => {
+            const id = e.target.id;
+            if (id === "ws-char-input") {
+                state.charQuery = e.target.value;
+                state.charOpen = true;
+                state.charHighlight = 0;
+                render();
+            } else if (id === "ws-grid-search") {
+                state.gridSearch = e.target.value;
+                render();
+            } else if (id === "ws-site-url") {
+                state.publicSiteUrl = e.target.value;
+                try { localStorage.setItem("ws_planner_site_url", e.target.value); } catch {}
+                const hash = encodeBuildHash(state.universe, currentBuild());
+                const cleanBase = (state.publicSiteUrl || CONFIG.URLS.DEFAULT_SITES).split("#")[0].trim();
+                const shareInput = document.getElementById("ws-share-url");
+                if (shareInput) shareInput.value = hash ? `${cleanBase}#${hash}` : cleanBase;
+            } else if (id === "ws-import-input") {
+                state.importText = e.target.value;
+                state.importError = "";
+            }
+        });
+
+        appEl.addEventListener("change", (e) => {
+            const id = e.target.id;
+            if (id === "ws-stage-select") {
+                selectMap(e.target.value);
+                render();
+            } else if (id === "ws-grant-base") {
+                updateBuild({ grantBaseWeapon: e.target.value });
+                render();
+            } else if (id === "ws-reliquary-evo") {
+                updateBuild({ reliquaryEvoWeapon: e.target.value });
+                render();
+            }
+        });
+
+        appEl.addEventListener("focusin", (e) => {
+            if (e.target.id === "ws-char-input") {
+                state.charOpen = true;
+                render();
+            } else if (e.target.id === "ws-share-url") {
+                e.target.select();
+            }
+        });
+
+        appEl.addEventListener("keydown", (e) => {
+            if (e.target.id !== "ws-char-input") return;
+            if (!state.charOpen && (e.key === "ArrowDown" || e.key === "Enter")) {
+                state.charOpen = true;
+                render();
+                return;
+            }
+            if (!state.charOpen) return;
+            const list = getFilteredChars();
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                state.charHighlight = list.length ? (state.charHighlight + 1) % list.length : 0;
+                render();
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                state.charHighlight = list.length ? (state.charHighlight - 1 + list.length) % list.length : 0;
+                render();
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                if (list[state.charHighlight]) {
+                    selectCharacter(list[state.charHighlight].name);
+                    render();
+                }
+            } else if (e.key === "Escape") {
+                state.charOpen = false;
+                render();
+            }
+        });
+
+        appEl.addEventListener("mouseover", (e) => {
+            const tileEl = e.target.closest("[data-tile-id]");
+            if (tileEl) {
+                const item = tileIndex.get(tileEl.dataset.tileId);
+                if (item && state.inspected?.id !== item.id) {
+                    state.inspected = item;
+                    document.getElementById("ws-inspector").innerHTML = renderInspector(item);
+                }
+                return;
+            }
+            const ddItem = e.target.closest("[data-action='select-char']");
+            if (ddItem) {
+                const idx = Number(ddItem.dataset.idx);
+                if (idx !== state.charHighlight) {
+                    state.charHighlight = idx;
+                    appEl.querySelectorAll(".ws-dd-item").forEach((el, i) => {
+                        el.dataset.active = String(i === idx);
+                    });
+                }
+            }
+        });
+
+        document.addEventListener("mousedown", (e) => {
+            if (state.charOpen && !e.target.closest("#ws-char-box")) {
+                state.charOpen = false;
+                render();
+            }
+        });
+
+        window.addEventListener("hashchange", () => {
+            const decoded = decodeBuildInput(location.hash);
+            if (decoded) {
+                state.universe = decoded.universe;
+                state.builds[decoded.universe] = decoded.build;
+                state.charQuery = decoded.build.character || "";
+                render();
+            }
+        });
+    })();
+</script>
+</body>
+</html>
